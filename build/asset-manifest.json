@@ -1,0 +1,25 @@
+{
+  "files": {
+    "main.css": "/static/css/main.12f92b1b.chunk.css",
+    "main.js": "/static/js/main.c7372143.chunk.js",
+    "main.js.map": "/static/js/main.c7372143.chunk.js.map",
+    "runtime~main.js": "/static/js/runtime~main.369d624f.js",
+    "runtime~main.js.map": "/static/js/runtime~main.369d624f.js.map",
+    "static/css/2.2e053283.chunk.css": "/static/css/2.2e053283.chunk.css",
+    "static/js/2.59a40ade.chunk.js": "/static/js/2.59a40ade.chunk.js",
+    "static/js/2.59a40ade.chunk.js.map": "/static/js/2.59a40ade.chunk.js.map",
+    "index.html": "/index.html",
+    "precache-manifest.a99c22fc30ebd945f5657ab1c10b821d.js": "/precache-manifest.a99c22fc30ebd945f5657ab1c10b821d.js",
+    "service-worker.js": "/service-worker.js",
+    "static/css/2.2e053283.chunk.css.map": "/static/css/2.2e053283.chunk.css.map",
+    "static/css/main.12f92b1b.chunk.css.map": "/static/css/main.12f92b1b.chunk.css.map",
+    "static/media/hugo-location-access.png": "/static/media/hugo-location-access.be36462b.png",
+    "static/media/hugo-navigation-support.png": "/static/media/hugo-navigation-support.bf666145.png",
+    "static/media/img_mac.png": "/static/media/img_mac.d8004ba7.png",
+    "static/media/kid.jpg": "/static/media/kid.ce56ce3e.jpg",
+    "static/media/logo.png": "/static/media/logo.5394522a.png",
+    "static/media/parallax.jpg": "/static/media/parallax.ade73e55.jpg",
+    "static/media/signup_driver.png": "/static/media/signup_driver.ce36dd8f.png",
+    "static/media/signup_passenger.png": "/static/media/signup_passenger.9c5a2f24.png"
+  }
+}
