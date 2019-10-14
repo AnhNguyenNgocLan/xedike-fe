@@ -2,6 +2,8 @@ import styled from "styled-components";
 import { Modal } from "antd";
 import { theme } from "./../../theme";
 import { DropdownMenu } from "reactstrap";
+import { DatePicker} from 'antd';
+
 
 export const HeaderWrapper = styled.header`
     color: ${props => props.theme.headerBackgroundColor};
@@ -49,4 +51,7 @@ export const DropdownMenuCustom = styled(DropdownMenu)`
     button {
         font-size: 14px;
     }
+`;
+export const DatePickerCustom = styled(DatePicker)`
+    display: block !important;
 `;

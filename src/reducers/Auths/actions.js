@@ -4,7 +4,7 @@ import setHeader from "../../utils/setHeader";
 import jwtDecode from "jwt-decode";
 import swal from "sweetalert";
 
-export const actionLogin = (data, showErr) => {
+export const actionLogin = (data, callbackThen, showErr) => {
     return dispatch => {
         return callAPI("api/users/login", "POST", data)
             .then(res => {
@@ -30,7 +30,7 @@ export const actionLogin = (data, showErr) => {
                 // Set param token in header for later requests (such as: login, reload page)
                 //debugger;
                 setHeader({ token });
-
+                callbackThen();
                 // Test token is added in header in trips request
                 // callAPI("api/trips", "GET", null);
             })

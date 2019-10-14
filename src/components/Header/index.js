@@ -6,6 +6,7 @@ import { Button } from "antd";
 import { FaUserCircle } from "react-icons/fa";
 import SignInForm from "./SignInForm";
 import SignUpForm from "./SignUpForm";
+import AddTripForm from "./AddTripForm";
 import { Menu, Avatar, Dropdown } from "antd";
 import { connect } from "react-redux";
 import { actionLogout } from "../../reducers/Auths/actions";
@@ -19,7 +20,8 @@ class Header extends Component {
         this.state = {
             signInVisible: false,
             signUpVisible: false,
-            dropdownOpen: false
+            dropdownOpen: false,
+            addTripVisible: false
         };
     }
 
@@ -43,15 +45,21 @@ class Header extends Component {
         });
     };
 
+    addTripModal = value => {
+        this.setState({ addTripVisible: value });
+    };
+
     render() {
-        const { signInVisible, signUpVisible } = this.state;
+        const { signInVisible, signUpVisible, addTripVisible } = this.state;
         const { auth } = this.props;
         const { isAuthenticated } = auth;
 
         const menu = (
             <Menu>
                 <Menu.Item>
-                    <p>Xin chào {auth.user.fullName}</p>
+                    <p>
+                        Xin chào ! <b>{auth.user.fullName}</b>
+                    </p>
                 </Menu.Item>
                 <Menu.Item>
                     <Link to="/profile">Thông Tin Cá Nhân</Link>
@@ -96,16 +104,15 @@ class Header extends Component {
                                 <Button
                                     type="button"
                                     className="btn-warning cursor-point mb-0"
-                                    onClick={() => this.signUpModal(true)}
+                                    onClick={() => this.addTripModal(true)}
                                 >
                                     <FaUserCircle className="mr-1" />
                                     Tạo Chuyến Đi
                                 </Button>
 
-                                <SignUpForm
-                                    signUpVisible={signUpVisible}
-                                    signUpModal={this.signUpModal}
-                                    signInModal={this.signInModal}
+                                <AddTripForm
+                                    addTripVisible={addTripVisible}
+                                    addTripModal={this.addTripModal}
                                 />
                             </NavItem>
 
@@ -152,8 +159,8 @@ class Header extends Component {
 
                                         <SignUpForm
                                             signUpVisible={signUpVisible}
-                                            signUpModal={this.signUpModal}
                                             signInModal={this.signInModal}
+                                            signUpModal={this.signUpModal}
                                         />
                                     </NavItem>
                                 </>

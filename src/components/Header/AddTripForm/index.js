@@ -5,9 +5,11 @@ import { withFormik, Form as FormikForm } from "formik";
 import _ from "lodash";
 import apiCaller from "../../../utils/apiCaller";
 import { InputNumberCustom } from "../../../components/RecentTrips/styled";
+import { ModalCustom, DatePickerCustom } from "../styled";
 import { withRouter } from "react-router-dom";
 import swal from "sweetalert";
 import { connect } from "react-redux";
+import moment from "moment";
 
 const FormItem = Form.Item;
 const { Option } = Select;
@@ -38,7 +40,9 @@ class AddTrip extends Component {
             values,
             setFieldValue,
             addTripVisible,
-            tripModal
+            addTripModal,
+            handleSubmit,
+            isSubmitting
         } = this.props;
 
         const locations = _.map(this.state.locationArr, (item, index) => {
@@ -54,9 +58,9 @@ class AddTrip extends Component {
                 title={<h3 className="modal-title text-center">Đặt Chỗ</h3>}
                 footer={[null, null]}
                 visible={addTripVisible}
-                onCancel={() => tripModal(false)}
+                onCancel={() => addTripModal(false)}
             >
-                <FormikForm>
+                <FormikForm onSubmit={handleSubmit}>
                     <div className="row">
                         <div className="col-6">
                             <FormItem
@@ -100,9 +104,7 @@ class AddTrip extends Component {
                                 }
                                 help={touched.locationTo && errors.locationTo}
                             >
-                                <label className="mb-0">
-                                    Nơi Đến
-                                </label>
+                                <label className="mb-0">Nơi Đến</label>
                                 <Select
                                     name="locationTo"
                                     size="large"
@@ -127,15 +129,12 @@ class AddTrip extends Component {
                     </div>
 
                     <div className="row">
-                        <div className="col-2 text-right">
-                            <label className="mb-0 ant-form-item-required">
-                                Thanh Toán
-                            </label>
-                        </div>
-                        <div className="col-10">
+                        <div className="col-6">
                             <FormItem>
+                                <label className="mb-0 ant-form-item-required">
+                                    Chi Phí
+                                </label>
                                 <Input
-                                    disabled
                                     size="large"
                                     value="Cash"
                                     suffix={
@@ -149,14 +148,8 @@ class AddTrip extends Component {
                                 />
                             </FormItem>
                         </div>
-                    </div>
-                    <div className="row">
-                        <div className="col-2 text-right">
-                            <label className="mb-0 ant-form-item-required">
-                                Số chỗ
-                            </label>
-                        </div>
-                        <div className="col-10">
+
+                        <div className="col-6">
                             <FormItem
                                 validateStatus={
                                     touched.numberOfBookingSeats &&
@@ -168,6 +161,9 @@ class AddTrip extends Component {
                                     errors.numberOfBookingSeats
                                 }
                             >
+                                <label className="mb-0 ant-form-item-required">
+                                    Số chỗ
+                                </label>
                                 <InputNumberCustom
                                     min={1}
                                     max={10}
@@ -185,26 +181,41 @@ class AddTrip extends Component {
                         </div>
                     </div>
                     <div className="row">
-                        <div className="col-2 text-right">
-                            <label className="mb-0">Ghi chú</label>
-                        </div>
-                        <div className="col-10">
-                            <FormItem>
-                                <Input.TextArea
-                                    name="note"
-                                    autosize={{ minRows: 5 }}
-                                    onChange={value =>
-                                        setFieldValue(
-                                            "note",
-                                            value.target.value
-                                        )
-                                    }
+                        <div className="col-12">
+                            <FormItem
+                                validateStatus={
+                                    touched.startTime &&
+                                    errors.startTime &&
+                                    "error"
+                                }
+                                help={touched.startTime && errors.startTime}
+                            >
+                                <label className="mb-0">
+                                    Thời Gian Khởi Hành
+                                </label>
+                                <DatePickerCustom
+                                    size="large"
+                                    onChange={e => {
+                                        setFieldValue("startTime", e);
+                                    }}
+                                    disabledDate={currentDay => {
+                                        return (
+                                            currentDay &&
+                                            currentDay <= moment().endOf('day')
+                                        );
+                                    }}
+                                    name="startTime"
+                                    value={values.startTime}
+                                    format="DD/MM/YYYY"
+                                    // value={values.startTime}
+                                    placeholder="Thời gian khởi hành..."
                                 />
                             </FormItem>
                         </div>
+                        
                     </div>
                     <div className="row">
-                        <div className="col-10 offset-2">
+                        <div className="col-12 offset-5">
                             <Button
                                 htmlType="submit"
                                 type="primary"

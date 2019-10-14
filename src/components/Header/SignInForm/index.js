@@ -1,9 +1,8 @@
 import React, { Component } from "react";
-import { Input, Button, Icon, Form } from "antd";
+import { Input, Button, Icon, Form, Spin } from "antd";
 import { ModalCustom } from "../styled";
 import * as Yup from "yup";
 import { withFormik, Form as FormikForm, Field } from "formik";
-// import * as Actions from "../../../reducers/Auths/actions";
 import { connect } from "react-redux";
 import { actionLogin } from "../../../reducers/Auths/actions";
 
@@ -17,9 +16,10 @@ class SignInForm extends Component {
             signUpModal,
             touched,
             errors,
-            handleSubmit
+            handleSubmit,
+            isSubmitting
         } = this.props;
-        //console.log(this.props.values);
+
         return (
             <ModalCustom
                 title={<h3 className="modal-title text-center">Đăng Nhập</h3>}
@@ -27,81 +27,83 @@ class SignInForm extends Component {
                 visible={signInVisible}
                 onCancel={() => signInModal(false)}
             >
-                <FormikForm onSubmit={handleSubmit}>
-                    <FormItem
-                        validateStatus={
-                            touched.email && errors.email && "error"
-                        }
-                        help={touched.email && errors.email}
-                    >
-                        <label>Email</label>
-                        <Field
-                            name="email"
-                            render={({ field }) => (
-                                <Input
-                                    type="email"
-                                    size="large"
-                                    placeholder="Nhập email..."
-                                    suffix={
-                                        <Icon
-                                            type="mail"
-                                            style={{
-                                                color: "rgba(0,0,0,.25)"
-                                            }}
-                                        />
-                                    }
-                                    {...field}
-                                />
-                            )}
-                        />
-                    </FormItem>
-                    <FormItem
-                        validateStatus={
-                            touched.password && errors.password && "error"
-                        }
-                        help={touched.password && errors.password}
-                    >
-                        <label>Mật Khẩu</label>
-                        <Field
-                            name="password"
-                            render={({ field }) => (
-                                <Input
-                                    type="password"
-                                    size="large"
-                                    placeholder="Nhập mật khẩu..."
-                                    suffix={
-                                        <Icon
-                                            type="lock"
-                                            style={{
-                                                color: "rgba(0,0,0,.25)"
-                                            }}
-                                        />
-                                    }
-                                    {...field}
-                                />
-                            )}
-                        />
-                    </FormItem>
-                    <div className="input-group text-center mb-3 justify-content-center">
-                        Bạn là Thành viên ?
-                        <span
-                            className="text-primary ml-1 cursor-point"
-                            onClick={() => signUpModal(true)}
+                <Spin spinning={isSubmitting}>
+                    <FormikForm onSubmit={handleSubmit}>
+                        <FormItem
+                            validateStatus={
+                                touched.email && errors.email && "error"
+                            }
+                            help={touched.email && errors.email}
                         >
-                            Đăng Ký
-                        </span>
-                    </div>
-                    <div className="input-group mb-3">
-                        <Button
-                            type="primary"
-                            size="large"
-                            block
-                            htmlType="submit"
+                            <label>Email</label>
+                            <Field
+                                name="email"
+                                render={({ field }) => (
+                                    <Input
+                                        type="email"
+                                        size="large"
+                                        placeholder="Nhập email..."
+                                        suffix={
+                                            <Icon
+                                                type="mail"
+                                                style={{
+                                                    color: "rgba(0,0,0,.25)"
+                                                }}
+                                            />
+                                        }
+                                        {...field}
+                                    />
+                                )}
+                            />
+                        </FormItem>
+                        <FormItem
+                            validateStatus={
+                                touched.password && errors.password && "error"
+                            }
+                            help={touched.password && errors.password}
                         >
-                            Đăng Nhập
-                        </Button>
-                    </div>
-                </FormikForm>
+                            <label>Mật Khẩu</label>
+                            <Field
+                                name="password"
+                                render={({ field }) => (
+                                    <Input
+                                        type="password"
+                                        size="large"
+                                        placeholder="Nhập mật khẩu..."
+                                        suffix={
+                                            <Icon
+                                                type="lock"
+                                                style={{
+                                                    color: "rgba(0,0,0,.25)"
+                                                }}
+                                            />
+                                        }
+                                        {...field}
+                                    />
+                                )}
+                            />
+                        </FormItem>
+                        <div className="input-group text-center mb-3 justify-content-center">
+                            Bạn là Thành viên ?
+                            <span
+                                className="text-primary ml-1 cursor-point"
+                                onClick={() => signUpModal(true)}
+                            >
+                                Đăng Ký
+                            </span>
+                        </div>
+                        <div className="input-group mb-3">
+                            <Button
+                                type="primary"
+                                size="large"
+                                block
+                                htmlType="submit"
+                            >
+                                Đăng Nhập
+                            </Button>
+                        </div>
+                    </FormikForm>
+                </Spin>
             </ModalCustom>
         );
     }
@@ -124,15 +126,22 @@ const withFormikHOC = withFormik({
             .required("Password is required")
             .min(4, "Password has at least 4 characters")
     }),
-    handleSubmit: (values, { resetForm, props, setFieldError }) => {
-        props.actionLogin(values, err => {
-            Object.keys({"email":'', "password":''}).forEach(field => {
-                setFieldError(field, err.response.data);               
-                
-            });           
-            
-        });
-        resetForm();
+    handleSubmit: (
+        values,
+        { resetForm, props, setFieldError, setSubmitting }
+    ) => {
+        props.actionLogin(
+            values,
+            () => {
+                setSubmitting(false);
+                resetForm();
+            },
+            err => {
+                Object.keys({ email: "", password: "" }).forEach(field => {
+                    setFieldError(field, err.response.data);
+                });
+            }
+        );
     }
 });
 
