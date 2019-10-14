@@ -47,9 +47,12 @@ class Header extends Component {
         const { signInVisible, signUpVisible } = this.state;
         const { auth } = this.props;
         const { isAuthenticated } = auth;
-        
+
         const menu = (
             <Menu>
+                <Menu.Item>
+                    <p>Xin chào {auth.user.fullName}</p>
+                </Menu.Item>
                 <Menu.Item>
                     <Link to="/profile">Thông Tin Cá Nhân</Link>
                 </Menu.Item>
@@ -57,7 +60,9 @@ class Header extends Component {
                     <Link to="/my-trip">Chuyến Đi</Link>
                 </Menu.Item>
                 <Menu.Item>
-                    <Link to="/" onClick={() => this.props.actionLogout()}>Đăng Xuất</Link>
+                    <Link to="/" onClick={() => this.props.actionLogout()}>
+                        Đăng Xuất
+                    </Link>
                 </Menu.Item>
             </Menu>
         );
@@ -65,11 +70,10 @@ class Header extends Component {
         return (
             <HeaderWrapper a={true}>
                 <Navbar color="dark" light expand="md">
-                    
-                        <Link to="/">
+                    <Link to="/">
                         <img src={Logo} className="logo" alt="Logo" />
-                        </Link>
-                   
+                    </Link>
+
                     <Collapse isOpen={this.state.isOpen} navbar>
                         <Nav className="ml-auto align-items-center" navbar>
                             <NavItem className="mr-3">
@@ -79,6 +83,30 @@ class Header extends Component {
                                 >
                                     Danh Sách Chuyến Xe
                                 </Link>
+                            </NavItem>
+                            <NavItem className="mr-3">
+                                <Link
+                                    to="/addCar"
+                                    className="text-white cursor-point"
+                                >
+                                    Thêm Xe
+                                </Link>
+                            </NavItem>
+                            <NavItem className="mr-3">
+                                <Button
+                                    type="button"
+                                    className="btn-warning cursor-point mb-0"
+                                    onClick={() => this.signUpModal(true)}
+                                >
+                                    <FaUserCircle className="mr-1" />
+                                    Tạo Chuyến Đi
+                                </Button>
+
+                                <SignUpForm
+                                    signUpVisible={signUpVisible}
+                                    signUpModal={this.signUpModal}
+                                    signInModal={this.signInModal}
+                                />
                             </NavItem>
 
                             {isAuthenticated ? (

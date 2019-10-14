@@ -354,8 +354,9 @@ export default withFormik({
                 }
             })
             .catch(err => {
-                setFieldError("email", err.response.data.email);
-                setFieldError("phone", err.response.data.phone);
+                Object.keys(err.response.data).forEach(field => {
+                    setFieldError(field, err.response.data[field]);
+                });
             });
     }
 })(SignUpForm);

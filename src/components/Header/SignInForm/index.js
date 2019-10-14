@@ -125,15 +125,14 @@ const withFormikHOC = withFormik({
             .min(4, "Password has at least 4 characters")
     }),
     handleSubmit: (values, { resetForm, props, setFieldError }) => {
-        //resetForm();
         props.actionLogin(values, err => {
             Object.keys({"email":'', "password":''}).forEach(field => {
-                setFieldError(field, err.response.data);
-                
+                setFieldError(field, err.response.data);               
                 
             });           
             
         });
+        resetForm();
     }
 });
 

@@ -8,7 +8,6 @@ export const actionLogin = (data, showErr) => {
     return dispatch => {
         return callAPI("api/users/login", "POST", data)
             .then(res => {
-                //  console.log(res.data);
                 const { token } = res.data;
 
                 // Save token in local storage
@@ -16,10 +15,12 @@ export const actionLogin = (data, showErr) => {
 
                 //decode token -> dispatch authenticate in Reducer
                 const decoded = jwtDecode(token);
+
                 dispatch({
                     type: Types.LOGIN,
                     payload: decoded
                 });
+
                 swal({
                     text: "Đăng nhập thành công.",
                     icon: "success",

@@ -46,9 +46,7 @@ class MyPassword extends Component {
                     .catch(err => {
                         Object.keys(err.response.data).forEach(field => {
                             setFieldError(field, err.response.data[field]);
-                        });
-                        console.log(err.response);
-                        
+                        });                       
                     });
                     
                 }}
