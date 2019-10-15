@@ -30,7 +30,6 @@ const user = (state = initialState, action) => {
                 updateUser.data[field] = action.payload[field];
             });
 
-            //console.log(updateUser)
 
             return updateUser;
 

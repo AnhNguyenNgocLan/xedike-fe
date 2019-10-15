@@ -36,6 +36,8 @@ class BookingTrip extends Component {
 
     render() {
         const { touched, errors, values, setFieldValue } = this.props;
+        console.log(this.props);
+        
 
         const locations = _.map(this.state.locationArr, (item, index) => {
             return (
@@ -46,6 +48,7 @@ class BookingTrip extends Component {
         });
 
         return (
+            
             <div className="container">
                 <BodyWrapper>
                     <Wrapper>

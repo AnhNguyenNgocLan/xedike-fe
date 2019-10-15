@@ -4,28 +4,25 @@ import TripItem from "./TripItem";
 import { connect } from "react-redux";
 import * as Actions from "../../reducers/Trip/actions";
 import { Link } from "react-router-dom";
+import { Skeleton } from "antd";
 
 class RecentTrips extends Component {
     componentDidMount() {
-       if (! this.props.isHomepage) return;
+        if (!this.props.isHomepage) return;
         this.props.fetchAllTrips();
     }
     render() {
-        var { trips = [], isHomepage } = this.props;    
-       
-        const tripElement = trips.map((item, index) => {
-            return (
-                <TripItem key={index} trip={item} index={index}  />
-            );
-        });
+        const { trips, isHomepage } = this.props;
+        const { isLoading, data } = trips;
+
+        
 
         return (
             <RecentTripSection className="container">
                 <h4 className="mb-4 text-uppercase">
                     {isHomepage ? "Chuyến Xe Gần Đây" : "Kết Quả Tìm Kiếm"}
                 </h4>
-
-                {tripElement}
+                {isLoading ? <Skeleton active /> : <TripItem trip={data} />}
 
                 {isHomepage ? (
                     <Link
