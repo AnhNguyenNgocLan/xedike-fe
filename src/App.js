@@ -26,9 +26,9 @@ function App(props) {
                 <Switch>
                     <Route path="/" exact component={HomePage}></Route>
                     <Route path="/profile" exact component={ isAuthenticated ? Profile : HomePage}></Route> 
-                    <Route path="/api/trips/search" exact component={TripSearchResult}></Route> 
+                    <Route path="/trips/search" exact component={TripSearchResult}></Route> 
                     {/* <Route path="/book-trip" exact component={TripSearchResult}></Route>  */}
-                    <Route path="/api/trips/book-trip/:id" exact component={BookingTripDetail}></Route> 
+                    <Route path="/book-trip/:id" exact component={BookingTripDetail}></Route> 
                     
                 </Switch>
             </BrowserRouter>

@@ -31,8 +31,11 @@ class BookingTrip extends Component {
     }
 
     componentDidMount() {
-        const { match, actionGetTripByID } = this.props;
+        const { match, actionGetTripByID, user } = this.props;
         const { id } = match.params;
+       // console.log("User: ", user.user.userType);
+        
+
         actionGetTripByID(id);
 
         apiCaller("api/provinces", "GET", null)

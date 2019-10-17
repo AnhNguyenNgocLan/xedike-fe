@@ -52,7 +52,7 @@ class Header extends Component {
     render() {
         const { signInVisible, signUpVisible, addTripVisible } = this.state;
         const { auth } = this.props;
-        const { isAuthenticated } = auth;
+        const { isAuthenticated } = auth;       
 
         const menu = (
             <Menu>
@@ -103,23 +103,32 @@ class Header extends Component {
 
                             {isAuthenticated ? (
                                 <>
-                                    <NavItem className="mr-3">
-                                        <Button
-                                            type="button"
-                                            className="btn-warning cursor-point mb-0"
-                                            onClick={() =>
-                                                this.addTripModal(true)
-                                            }
-                                        >
-                                            <FaUserCircle className="mr-1" />
-                                            Tạo Chuyến Đi
-                                        </Button>
+                                    {" "}
+                                    {auth.user.userType == "driver" && (
+                                        <>
+                                            <NavItem className="mr-3">
+                                                <Button
+                                                    type="button"
+                                                    className="btn-warning cursor-point mb-0"
+                                                    onClick={() =>
+                                                        this.addTripModal(true)
+                                                    }
+                                                >
+                                                    <FaUserCircle className="mr-1" />
+                                                    Tạo Chuyến Đi
+                                                </Button>
 
-                                        <AddTripForm
-                                            addTripVisible={addTripVisible}
-                                            addTripModal={this.addTripModal}
-                                        />
-                                    </NavItem>
+                                                <AddTripForm
+                                                    addTripVisible={
+                                                        addTripVisible
+                                                    }
+                                                    addTripModal={
+                                                        this.addTripModal
+                                                    }
+                                                />
+                                            </NavItem>
+                                        </>
+                                    )}
                                     <NavItem className="mr-3">
                                         <Dropdown overlay={menu}>
                                             <Avatar

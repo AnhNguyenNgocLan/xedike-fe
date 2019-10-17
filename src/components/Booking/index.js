@@ -128,7 +128,7 @@ class Booking extends Component {
                                     );
 
                                     history.push(
-                                        `/api/trips/search?${suffixSearchQuery}`
+                                        `/trips/search?${suffixSearchQuery}`
                                     );
 
                                     if (!isHomepage) {

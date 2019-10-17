@@ -12,17 +12,19 @@ class RecentTrips extends Component {
         this.props.fetchAllTrips();
     }
     render() {
-        const { trips, isHomepage } = this.props;
+        const { trips, isHomepage, auth } = this.props;
         const { isLoading, data } = trips;
-
-        
 
         return (
             <RecentTripSection className="container">
                 <h4 className="mb-4 text-uppercase">
                     {isHomepage ? "Chuyến Xe Gần Đây" : "Kết Quả Tìm Kiếm"}
                 </h4>
-                {isLoading ? <Skeleton active /> : <TripItem trip={data} />}
+                {isLoading ? (
+                    <Skeleton active />
+                ) : (
+                    <TripItem trip={data} userType={auth.user.userType} />
+                )}
 
                 {isHomepage ? (
                     <Link
@@ -44,7 +46,8 @@ class RecentTrips extends Component {
 
 const mapStateToProps = state => {
     return {
-        trips: state.trips
+        trips: state.trips,
+        auth: state.authReducer
     };
 };
 
