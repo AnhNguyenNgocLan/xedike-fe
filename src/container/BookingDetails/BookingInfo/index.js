@@ -1,16 +1,22 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 import Kid from "../../../assets/images/kid.jpg";
-import { Wrapper } from '../styled';
-import { Form, Input, Button, Icon, Select, notification } from 'antd';
-import { object, string } from 'yup';
-import { withFormik, Form as FormikForm } from 'formik';
-import _ from 'lodash';
-import apiCaller from '../../../utils/apiCaller';
-import { Price, Thumb, InputNumberCustom } from '../../../components/RecentTrips/styled';
-import { withRouter } from 'react-router-dom';
-import { BodyWrapper } from '../styled';
-import swal from 'sweetalert';
-import { connect } from 'react-redux';
+import { Wrapper } from "../styled";
+import { Form, Input, Button, Icon, Select, notification, Skeleton } from "antd";
+import { object, string } from "yup";
+import { withFormik, Form as FormikForm } from "formik";
+import _ from "lodash";
+import apiCaller from "../../../utils/apiCaller";
+import {
+    Price,
+    Thumb,
+    InputNumberCustom
+} from "../../../components/RecentTrips/styled";
+import { withRouter } from "react-router-dom";
+import { BodyWrapper } from "../styled";
+import swal from "sweetalert";
+import { connect } from "react-redux";
+import { actionGetTripByID } from "../../../reducers/Trip/actions";
+import moment from "moment"
 
 const FormItem = Form.Item;
 const { Option } = Select;
@@ -25,7 +31,11 @@ class BookingTrip extends Component {
     }
 
     componentDidMount() {
-        apiCaller('api/provinces', 'GET', null)
+        const { match, actionGetTripByID } = this.props;
+        const { id } = match.params;
+        actionGetTripByID(id);
+
+        apiCaller("api/provinces", "GET", null)
             .then(res => {
                 this.setState({
                     locationArr: res.data
@@ -35,9 +45,8 @@ class BookingTrip extends Component {
     }
 
     render() {
-        const { touched, errors, values, setFieldValue } = this.props;
-        console.log(this.props);
-        
+        const { touched, errors, values, setFieldValue, trips } = this.props;
+        const tripData = trips.data;       
 
         const locations = _.map(this.state.locationArr, (item, index) => {
             return (
@@ -48,29 +57,34 @@ class BookingTrip extends Component {
         });
 
         return (
-            
             <div className="container">
                 <BodyWrapper>
                     <Wrapper>
                         <h5 className="font-weight-normal d-flex align-items-center mb-3">
-                            <Icon type="car" className="mr-1" /> Thông Tin Chuyến Đi
+                            <Icon type="car" className="mr-1" /> Thông Tin
+                            Chuyến Đi
                         </h5>
+                        <Skeleton
+                        loading={trips.isLoading}
+                        active
+                        paragraph={{ rows: 4 }}
+                    >
                         <div className="d-flex">
                             <div className="flex-grow-1">
                                 <div className="d-flex align-items-center mb-1">
-                                    Hà Nội
+                                    {tripData.locationFrom}
                                     <Icon type="arrow-right" className="mx-2" />
-                                    Hải Phòng
+                                    {tripData.locationTo}
                                 </div>
                                 <div className="d-flex align-items-center">
                                     <Icon type="calendar" className="mr-1" />
-                                    20/10/2019
+                                    {moment(tripData.startTime).format("DD/MM/YYYY")}
                                 </div>
                             </div>
                             <div className="flex-grow-1">
-                                <div className="mb-1">Honda</div>
+                                <div className="mb-1 d-flex align-items-center">Honda</div>
                                 <div className="d-flex align-items-center">
-                                    <Icon type="team" className="mr-1" />6
+                                    <Icon type="team" className="mr-1" />{tripData.availableSeats}
                                 </div>
                             </div>
                             <div className="flex-grow-1 d-inline-flex">
@@ -93,9 +107,10 @@ class BookingTrip extends Component {
                                 </div>
                             </div>
                             <Price priceFont="30px" className="flex-grow-1">
-                                250000 <sup>vnd</sup>
+                                {tripData.fee} <sup>vnd</sup>
                             </Price>
                         </div>
+                        </Skeleton>
                     </Wrapper>
                     <Wrapper className="mt-5">
                         <h5 className="font-weight-normal d-flex align-items-center mb-3">
@@ -113,7 +128,7 @@ class BookingTrip extends Component {
                                         validateStatus={
                                             touched.locationFrom &&
                                             errors.locationFrom &&
-                                            'error'
+                                            "error"
                                         }
                                         help={
                                             touched.locationFrom &&
@@ -129,14 +144,14 @@ class BookingTrip extends Component {
                                             value={values.locationFrom}
                                             onChange={value =>
                                                 setFieldValue(
-                                                    'locationFrom',
+                                                    "locationFrom",
                                                     value
                                                 )
                                             }
                                             suffixIcon={
                                                 <Icon
                                                     type="environment"
-                                                    style={{ color: '#28a745' }}
+                                                    style={{ color: "#28a745" }}
                                                 />
                                             }
                                         >
@@ -156,7 +171,7 @@ class BookingTrip extends Component {
                                         validateStatus={
                                             touched.locationTo &&
                                             errors.locationTo &&
-                                            'error'
+                                            "error"
                                         }
                                         help={
                                             touched.locationTo &&
@@ -172,14 +187,14 @@ class BookingTrip extends Component {
                                             value={values.locationTo}
                                             onChange={value =>
                                                 setFieldValue(
-                                                    'locationTo',
+                                                    "locationTo",
                                                     value
                                                 )
                                             }
                                             suffixIcon={
                                                 <Icon
                                                     type="environment"
-                                                    style={{ color: '#dc3545' }}
+                                                    style={{ color: "#dc3545" }}
                                                 />
                                             }
                                         >
@@ -204,7 +219,7 @@ class BookingTrip extends Component {
                                                 <Icon
                                                     type="money-collect"
                                                     style={{
-                                                        color: 'rgba(0,0,0,.25)'
+                                                        color: "rgba(0,0,0,.25)"
                                                     }}
                                                 />
                                             }
@@ -223,7 +238,7 @@ class BookingTrip extends Component {
                                         validateStatus={
                                             touched.numberOfBookingSeats &&
                                             errors.numberOfBookingSeats &&
-                                            'error'
+                                            "error"
                                         }
                                         help={
                                             touched.numberOfBookingSeats &&
@@ -238,7 +253,7 @@ class BookingTrip extends Component {
                                             name="numberOfBookingSeats"
                                             onChange={value =>
                                                 setFieldValue(
-                                                    'numberOfBookingSeats',
+                                                    "numberOfBookingSeats",
                                                     value
                                                 )
                                             }
@@ -257,7 +272,7 @@ class BookingTrip extends Component {
                                             autosize={{ minRows: 5 }}
                                             onChange={value =>
                                                 setFieldValue(
-                                                    'note',
+                                                    "note",
                                                     value.target.value
                                                 )
                                             }
@@ -290,43 +305,43 @@ const withFormikHOC = withFormik({
             locationFrom: undefined,
             locationTo: undefined,
             numberOfBookingSeats: 2,
-            note: ''
+            note: ""
         };
     },
     validationSchema: object().shape({
-        locationFrom: string().required('Chọn nơi đi'),
-        locationTo: string().required('Chọn nơi đến')
+        locationFrom: string().required("Chọn nơi đi"),
+        locationTo: string().required("Chọn nơi đến")
     }),
     handleSubmit: (values, { props }) => {
         if (!props.user.isAuthenticated) {
             return swal({
-                text: 'Bạn phải đăng nhập đế đặt chuyến đi',
-                icon: 'warning',
+                text: "Bạn phải đăng nhập đế đặt chuyến đi",
+                icon: "warning",
                 buttons: false,
                 timer: 1500
             });
         }
 
-        apiCaller(`api/trips/book-trip/${props.match.params.id}`, 'PUT', values)
+        apiCaller(`api/trips/book-trip/${props.match.params.id}`, "PUT", values)
             .then(() => {
                 swal({
-                    text: 'Đặt chỗ thành công!',
-                    icon: 'success',
+                    text: "Đặt chỗ thành công!",
+                    icon: "success",
                     buttons: false,
                     timer: 1500
                 }).then(() => {
-                    props.history.push('/');
+                    props.history.push("/");
                 });
             })
             .catch(err => {
                 let errs = err.response;
-                if (_.get(err, 'response.data.message')) {
+                if (_.get(err, "response.data.message")) {
                     errs = err.response.data.message;
                 }
                 notification.error({
                     message: errs,
                     duration: 2.5,
-                    placement: 'topLeft'
+                    placement: "topLeft"
                 });
             });
     }
@@ -334,11 +349,12 @@ const withFormikHOC = withFormik({
 
 const mapStateToProps = state => {
     return {
-        user: state.authReducer
+        user: state.authReducer,
+        trips: state.trips
     };
 };
 
 export default connect(
     mapStateToProps,
-    null
+    { actionGetTripByID }
 )(withRouter(withFormikHOC(BookingTrip)));

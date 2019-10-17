@@ -100,24 +100,26 @@ class Header extends Component {
                                     Thêm Xe
                                 </Link>
                             </NavItem>
-                            <NavItem className="mr-3">
-                                <Button
-                                    type="button"
-                                    className="btn-warning cursor-point mb-0"
-                                    onClick={() => this.addTripModal(true)}
-                                >
-                                    <FaUserCircle className="mr-1" />
-                                    Tạo Chuyến Đi
-                                </Button>
-
-                                <AddTripForm
-                                    addTripVisible={addTripVisible}
-                                    addTripModal={this.addTripModal}
-                                />
-                            </NavItem>
 
                             {isAuthenticated ? (
                                 <>
+                                    <NavItem className="mr-3">
+                                        <Button
+                                            type="button"
+                                            className="btn-warning cursor-point mb-0"
+                                            onClick={() =>
+                                                this.addTripModal(true)
+                                            }
+                                        >
+                                            <FaUserCircle className="mr-1" />
+                                            Tạo Chuyến Đi
+                                        </Button>
+
+                                        <AddTripForm
+                                            addTripVisible={addTripVisible}
+                                            addTripModal={this.addTripModal}
+                                        />
+                                    </NavItem>
                                     <NavItem className="mr-3">
                                         <Dropdown overlay={menu}>
                                             <Avatar

@@ -1,8 +1,9 @@
 import * as Types from "./actionTypes";
+import { stat } from "fs";
 
 var initialState = {
     isLoading: true,
-    data: {
+    data: [{
         isFinished: false,
         _id: "",
         locationFrom: "",
@@ -11,7 +12,7 @@ var initialState = {
         availableSeats: "",
         fee: "",
         passengers: []
-    }
+    }]
 };
 
 // const findIndex = (trips, id) => {
@@ -30,6 +31,20 @@ const trips = (state = initialState, action) => {
             return {
                 isLoading: false,
                 data: action.payload
+            };
+
+        case Types.GET_TRIP_BY_ID:
+            return {
+                isLoading: false,
+                data: action.payload
+            };
+
+        case Types.CREATE_TRIP:
+            state.data.push(action.payload);
+            
+            return {
+                isLoading: false,   
+                data: [...state.data]
             };
 
         default:

@@ -8,8 +8,7 @@ import { Empty } from "antd";
 class TripItem extends Component {
     render() {
         const { index, trip = [] } = this.props;
-        console.log(trip);
-
+        
         const isEmpty = _.isEmpty(trip);
         // const tripElement = data.map((item, index) => {
         //     return <TripItem key={index} trip={item} index={index} />;

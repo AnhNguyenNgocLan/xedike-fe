@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Form, Input, Button, Icon, Select, notification } from "antd";
+import { Form, Input, Button, Icon, Select, Spin } from "antd";
 import { object, string } from "yup";
 import { withFormik, Form as FormikForm } from "formik";
 import _ from "lodash";
@@ -7,9 +7,9 @@ import apiCaller from "../../../utils/apiCaller";
 import { InputNumberCustom } from "../../../components/RecentTrips/styled";
 import { ModalCustom, DatePickerCustom } from "../styled";
 import { withRouter } from "react-router-dom";
-import swal from "sweetalert";
 import { connect } from "react-redux";
 import moment from "moment";
+import { actionCreateTripRequest } from "../../../reducers/Trip/actions";
 
 const FormItem = Form.Item;
 const { Option } = Select;
@@ -55,177 +55,189 @@ class AddTrip extends Component {
 
         return (
             <ModalCustom
-                title={<h3 className="modal-title text-center">Đặt Chỗ</h3>}
+                title={
+                    <h3 className="modal-title text-center">Thêm Chuyến Xe</h3>
+                }
                 footer={[null, null]}
                 visible={addTripVisible}
                 onCancel={() => addTripModal(false)}
             >
-                <FormikForm onSubmit={handleSubmit}>
-                    <div className="row">
-                        <div className="col-6">
-                            <FormItem
-                                validateStatus={
-                                    touched.locationFrom &&
-                                    errors.locationFrom &&
-                                    "error"
-                                }
-                                help={
-                                    touched.locationFrom && errors.locationFrom
-                                }
-                            >
-                                <label className="mb-0">Nơi Đi</label>
-                                <Select
-                                    name="locationFrom"
-                                    size="large"
-                                    showSearch
-                                    placeholder="Select location"
-                                    optionFilterProp="children"
-                                    value={values.locationFrom}
-                                    onChange={value =>
-                                        setFieldValue("locationFrom", value)
+                <Spin spinning={isSubmitting} tip="Loading...">
+                    <FormikForm onSubmit={handleSubmit}>
+                        <div className="row">
+                            <div className="col-6">
+                                <FormItem
+                                    validateStatus={
+                                        touched.locationFrom &&
+                                        errors.locationFrom &&
+                                        "error"
                                     }
-                                    suffixIcon={
-                                        <Icon
-                                            type="environment"
-                                            style={{ color: "#28a745" }}
-                                        />
+                                    help={
+                                        touched.locationFrom &&
+                                        errors.locationFrom
                                     }
                                 >
-                                    {locations}
-                                </Select>
-                            </FormItem>
-                        </div>
-                        <div className="col-6">
-                            <FormItem
-                                validateStatus={
-                                    touched.locationTo &&
-                                    errors.locationTo &&
-                                    "error"
-                                }
-                                help={touched.locationTo && errors.locationTo}
-                            >
-                                <label className="mb-0">Nơi Đến</label>
-                                <Select
-                                    name="locationTo"
-                                    size="large"
-                                    showSearch
-                                    placeholder="Select location"
-                                    optionFilterProp="children"
-                                    value={values.locationTo}
-                                    onChange={value =>
-                                        setFieldValue("locationTo", value)
+                                    <label className="mb-0">Nơi Đi</label>
+                                    <Select
+                                        name="locationFrom"
+                                        size="large"
+                                        showSearch
+                                        placeholder="Select location"
+                                        optionFilterProp="children"
+                                        value={values.locationFrom}
+                                        onChange={value =>
+                                            setFieldValue("locationFrom", value)
+                                        }
+                                        suffixIcon={
+                                            <Icon
+                                                type="environment"
+                                                style={{ color: "#28a745" }}
+                                            />
+                                        }
+                                    >
+                                        {locations}
+                                    </Select>
+                                </FormItem>
+                            </div>
+                            <div className="col-6">
+                                <FormItem
+                                    validateStatus={
+                                        touched.locationTo &&
+                                        errors.locationTo &&
+                                        "error"
                                     }
-                                    suffixIcon={
-                                        <Icon
-                                            type="environment"
-                                            style={{ color: "#dc3545" }}
-                                        />
+                                    help={
+                                        touched.locationTo && errors.locationTo
                                     }
                                 >
-                                    {locations}
-                                </Select>
-                            </FormItem>
-                        </div>
-                    </div>
-
-                    <div className="row">
-                        <div className="col-6">
-                            <FormItem>
-                                <label className="mb-0 ant-form-item-required">
-                                    Chi Phí
-                                </label>
-                                <Input
-                                    size="large"
-                                    value="Cash"
-                                    suffix={
-                                        <Icon
-                                            type="money-collect"
-                                            style={{
-                                                color: "rgba(0,0,0,.25)"
-                                            }}
-                                        />
-                                    }
-                                />
-                            </FormItem>
+                                    <label className="mb-0">Nơi Đến</label>
+                                    <Select
+                                        name="locationTo"
+                                        size="large"
+                                        showSearch
+                                        placeholder="Select location"
+                                        optionFilterProp="children"
+                                        value={values.locationTo}
+                                        onChange={value =>
+                                            setFieldValue("locationTo", value)
+                                        }
+                                        suffixIcon={
+                                            <Icon
+                                                type="environment"
+                                                style={{ color: "#dc3545" }}
+                                            />
+                                        }
+                                    >
+                                        {locations}
+                                    </Select>
+                                </FormItem>
+                            </div>
                         </div>
 
-                        <div className="col-6">
-                            <FormItem
-                                validateStatus={
-                                    touched.numberOfBookingSeats &&
-                                    errors.numberOfBookingSeats &&
-                                    "error"
-                                }
-                                help={
-                                    touched.numberOfBookingSeats &&
-                                    errors.numberOfBookingSeats
-                                }
-                            >
-                                <label className="mb-0 ant-form-item-required">
-                                    Số chỗ
-                                </label>
-                                <InputNumberCustom
-                                    min={1}
-                                    max={10}
-                                    defaultValue={2}
-                                    size="large"
-                                    name="numberOfBookingSeats"
-                                    onChange={value =>
-                                        setFieldValue(
-                                            "numberOfBookingSeats",
-                                            value
-                                        )
+                        <div className="row">
+                            <div className="col-6">
+                                <FormItem>
+                                    <label className="mb-0 ant-form-item-required">
+                                        Chi Phí
+                                    </label>
+                                    <InputNumberCustom
+                                        min={20000}
+                                        defaultValue={20000}
+                                        size="large"
+                                        name="fee"
+                                        onChange={value =>
+                                            setFieldValue("fee", value)
+                                        }
+                                        suffix={
+                                            <Icon
+                                                type="money-collect"
+                                                style={{
+                                                    color: "rgba(0,0,0,.25)"
+                                                }}
+                                            />
+                                        }
+                                    />
+                                </FormItem>
+                            </div>
+
+                            <div className="col-6">
+                                <FormItem
+                                    validateStatus={
+                                        touched.availableSeats &&
+                                        errors.availableSeats &&
+                                        "error"
                                     }
-                                />
-                            </FormItem>
+                                    help={
+                                        touched.availableSeats &&
+                                        errors.availableSeats
+                                    }
+                                >
+                                    <label className="mb-0 ant-form-item-required">
+                                        Số chỗ
+                                    </label>
+                                    <InputNumberCustom
+                                        min={1}
+                                        max={50}
+                                        defaultValue={2}
+                                        size="large"
+                                        name="availableSeats"
+                                        onChange={value =>
+                                            setFieldValue(
+                                                "availableSeats",
+                                                value
+                                            )
+                                        }
+                                    />
+                                </FormItem>
+                            </div>
                         </div>
-                    </div>
-                    <div className="row">
-                        <div className="col-12">
-                            <FormItem
-                                validateStatus={
-                                    touched.startTime &&
-                                    errors.startTime &&
-                                    "error"
-                                }
-                                help={touched.startTime && errors.startTime}
-                            >
-                                <label className="mb-0">
-                                    Thời Gian Khởi Hành
-                                </label>
-                                <DatePickerCustom
+                        <div className="row">
+                            <div className="col-12">
+                                <FormItem
+                                    validateStatus={
+                                        touched.startTime &&
+                                        errors.startTime &&
+                                        "error"
+                                    }
+                                    help={touched.startTime && errors.startTime}
+                                >
+                                    <label className="mb-0">
+                                        Thời Gian Khởi Hành
+                                    </label>
+                                    <DatePickerCustom
+                                        size="large"
+                                        onChange={e => {
+                                            setFieldValue("startTime", e);
+                                        }}
+                                        disabledDate={currentDay => {
+                                            return (
+                                                currentDay &&
+                                                currentDay <=
+                                                    moment().endOf("day")
+                                            );
+                                        }}
+                                        name="startTime"
+                                        value={values.startTime}
+                                        format="DD/MM/YYYY"
+                                        // value={values.startTime}
+                                        placeholder="Thời gian khởi hành..."
+                                    />
+                                </FormItem>
+                            </div>
+                        </div>
+                        <div className="row">
+                            <div className="col-12 offset-5">
+                                <Button
+                                    htmlType="submit"
+                                    type="primary"
                                     size="large"
-                                    onChange={e => {
-                                        setFieldValue("startTime", e);
-                                    }}
-                                    disabledDate={currentDay => {
-                                        return (
-                                            currentDay &&
-                                            currentDay <= moment().endOf('day')
-                                        );
-                                    }}
-                                    name="startTime"
-                                    value={values.startTime}
-                                    format="DD/MM/YYYY"
-                                    // value={values.startTime}
-                                    placeholder="Thời gian khởi hành..."
-                                />
-                            </FormItem>
+                                >
+                                    Submit
+                                </Button>
+                            </div>
                         </div>
-                        
-                    </div>
-                    <div className="row">
-                        <div className="col-12 offset-5">
-                            <Button
-                                htmlType="submit"
-                                type="primary"
-                                size="large"
-                            >
-                                Submit
-                            </Button>
-                        </div>
-                    </div>
-                </FormikForm>
+                    </FormikForm>
+                </Spin>
             </ModalCustom>
         );
     }
@@ -236,46 +248,22 @@ const withFormikHOC = withFormik({
         return {
             locationFrom: undefined,
             locationTo: undefined,
-            numberOfBookingSeats: 2,
-            note: ""
+            availableSeats: 2,
+            fee: 10000,
+            startTime: undefined
         };
     },
     validationSchema: object().shape({
         locationFrom: string().required("Chọn nơi đi"),
-        locationTo: string().required("Chọn nơi đến")
+        locationTo: string().required("Chọn nơi đến"),
+        startTime: string().required("Chọn thời gian đi.")
     }),
-    handleSubmit: (values, { props }) => {
-        if (!props.user.isAuthenticated) {
-            return swal({
-                text: "Bạn phải đăng nhập đế đặt chuyến đi",
-                icon: "warning",
-                buttons: false,
-                timer: 1500
-            });
-        }
-
-        apiCaller(`api/trips/book-trip/${props.match.params.id}`, "PUT", values)
-            .then(() => {
-                swal({
-                    text: "Đặt chỗ thành công!",
-                    icon: "success",
-                    buttons: false,
-                    timer: 1500
-                }).then(() => {
-                    props.history.push("/");
-                });
-            })
-            .catch(err => {
-                let errs = err.response;
-                if (_.get(err, "response.data.message")) {
-                    errs = err.response.data.message;
-                }
-                notification.error({
-                    message: errs,
-                    duration: 2.5,
-                    placement: "topLeft"
-                });
-            });
+    handleSubmit: (values, { props, resetForm, setSubmitting }) => {
+        props.actionCreateTripRequest(values, () => {
+            setSubmitting(false);
+            resetForm();
+            props.addTripModal(false);
+        });
     }
 });
 
@@ -287,5 +275,5 @@ const mapStateToProps = state => {
 
 export default connect(
     mapStateToProps,
-    null
+    { actionCreateTripRequest }
 )(withRouter(withFormikHOC(AddTrip)));
