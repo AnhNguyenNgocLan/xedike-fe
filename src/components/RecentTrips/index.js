@@ -32,7 +32,7 @@ class RecentTrips extends Component {
                         type="primary"
                         size="large"
                         block="true"
-                        className="btn btn-outline-info"
+                        className="btn btn-outline-info mt-4"
                     >
                         Xem Thêm
                     </Link>

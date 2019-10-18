@@ -52,7 +52,9 @@ class Header extends Component {
     render() {
         const { signInVisible, signUpVisible, addTripVisible } = this.state;
         const { auth } = this.props;
-        const { isAuthenticated } = auth;       
+        const { isAuthenticated } = auth;
+        const isDriver = auth.user.userType;
+        console.log(isDriver);
 
         const menu = (
             <Menu>
@@ -89,7 +91,7 @@ class Header extends Component {
                                     to="/trips"
                                     className="text-white cursor-point"
                                 >
-                                    Danh Sách Chuyến Xe
+                                    Chuyến Xe
                                 </Link>
                             </NavItem>
                             <NavItem className="mr-3">
@@ -103,8 +105,7 @@ class Header extends Component {
 
                             {isAuthenticated ? (
                                 <>
-                                    {" "}
-                                    {auth.user.userType == "driver" && (
+                                    {isDriver === "driver" ? (
                                         <>
                                             <NavItem className="mr-3">
                                                 <Button
@@ -128,6 +129,8 @@ class Header extends Component {
                                                 />
                                             </NavItem>
                                         </>
+                                    ) : (
+                                        <></>
                                     )}
                                     <NavItem className="mr-3">
                                         <Dropdown overlay={menu}>
