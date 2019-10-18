@@ -3,16 +3,18 @@ import { stat } from "fs";
 
 var initialState = {
     isLoading: true,
-    data: [{
-        isFinished: false,
-        _id: "",
-        locationFrom: "",
-        locationTo: "",
-        startTime: null,
-        availableSeats: "",
-        fee: "",
-        passengers: []
-    }]
+    data: [
+        {
+            isFinished: false,
+            _id: "",
+            locationFrom: "",
+            locationTo: "",
+            startTime: null,
+            availableSeats: "",
+            fee: "",
+            passengers: []
+        }
+    ]
 };
 
 // const findIndex = (trips, id) => {
@@ -33,17 +35,17 @@ const trips = (state = initialState, action) => {
                 data: action.payload
             };
 
-        case Types.GET_TRIP_BY_ID:
+        case Types.GET_TRIP_BY_ID:            
             return {
                 isLoading: false,
                 data: action.payload
             };
-
+        
         case Types.CREATE_TRIP:
             state.data.push(action.payload);
-            
+
             return {
-                isLoading: false,   
+                isLoading: false,
                 data: [...state.data]
             };
 

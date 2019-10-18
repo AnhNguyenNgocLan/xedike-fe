@@ -6,6 +6,7 @@ import Header from "./components/Header"
 import Profile from "./container/Profile";
 import TripSearchResult from "./container/Trips/TripSearchResult";
 import BookingTripDetail from "./container/BookingDetails";
+import MyTrip  from "./container/Profile/MyTrip"
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import setHeader from "./utils/setHeader";
 import { connect } from "react-redux";
@@ -27,9 +28,8 @@ function App(props) {
                     <Route path="/" exact component={HomePage}></Route>
                     <Route path="/profile" exact component={ isAuthenticated ? Profile : HomePage}></Route> 
                     <Route path="/trips/search" exact component={TripSearchResult}></Route> 
-                    {/* <Route path="/book-trip" exact component={TripSearchResult}></Route>  */}
-                    <Route path="/book-trip/:id" exact component={BookingTripDetail}></Route> 
-                    
+                    <Route path="/my-trip" exact component={MyTrip}></Route> 
+                    <Route path="/book-trip/:id" exact component={BookingTripDetail}></Route>
                 </Switch>
             </BrowserRouter>
         </div>
