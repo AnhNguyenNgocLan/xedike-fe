@@ -32,12 +32,6 @@ export const actionGetTripByID = id => {
                     type: Types.GET_TRIP_BY_ID,
                     payload: res.data
                 });
-                // swal({
-                //     text: "Tạo chuyến đi thành công!",
-                //     icon: "success",
-                //     buttons: false,
-                //     timer: 1500
-                // });
             })
             .catch(err => {
                 console.log(err.response);
@@ -64,6 +58,21 @@ export const actionCreateTripRequest = (trip, callback) => {
             })
             .catch(err => {
                 console.log(err.response);
+            });
+    };
+};
+
+export const actionGetMyTrip = () => {
+    return dispatch => {
+        return callAPI("api/users/my-trips", "GET", null)
+            .then(res => {
+                dispatch({
+                    type: Types.GET_MY_OWN_TRIP,
+                    payload: res.data
+                });
+            })
+            .catch(err => {
+                console.log(err.res);
             });
     };
 };

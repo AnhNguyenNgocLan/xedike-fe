@@ -63,7 +63,7 @@ class Header extends Component {
                     </p>
                 </Menu.Item>
                 <Menu.Item>
-                    <Link to="/profile">Thông Tin Cá Nhân</Link>
+                    <Link to="/edit-profile">Thông Tin Cá Nhân</Link>
                 </Menu.Item>
                 <Menu.Item>
                     <Link to="/my-trip">Chuyến Đi</Link>

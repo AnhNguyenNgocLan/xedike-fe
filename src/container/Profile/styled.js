@@ -15,7 +15,7 @@ export const Wrapper = styled.div`
         margin-right: 40px;
     }
     
-    img { width: 100px; height: 100px; border-radius: 100%;}
+    img { width: 70px; height: 70px; border-radius: 100%;}
 `;
 
 export const BodyWrapper = styled.div`

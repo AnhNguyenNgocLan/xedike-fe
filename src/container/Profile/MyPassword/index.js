@@ -34,7 +34,7 @@ class MyPassword extends Component {
                     callAPI(`api/users/password/${id}`, "PUT", values).then(res => {
                         if (res.status === 200) {
                             swal({
-                                text: "Đăng ký thành công!",
+                                text: "Cập nhật thành công!",
                                 icon: "success",
                                 buttons: false,
                                 timer: 1500

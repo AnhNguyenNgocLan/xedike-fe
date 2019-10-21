@@ -12,7 +12,10 @@ var initialState = {
             startTime: null,
             availableSeats: "",
             fee: "",
-            passengers: []
+            driverID: {                
+                _id: '',
+                fullName: ''
+            }
         }
     ]
 };
@@ -35,18 +38,24 @@ const trips = (state = initialState, action) => {
                 data: action.payload
             };
 
-        case Types.GET_TRIP_BY_ID:            
+        case Types.GET_TRIP_BY_ID:
             return {
                 isLoading: false,
                 data: action.payload
             };
-        
+
         case Types.CREATE_TRIP:
             state.data.push(action.payload);
 
             return {
                 isLoading: false,
                 data: [...state.data]
+            };
+
+        case Types.GET_MY_OWN_TRIP:
+            return {
+                isLoading: false,
+                data: action.payload
             };
 
         default:

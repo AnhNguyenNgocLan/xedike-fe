@@ -1,241 +1,161 @@
-import React, { Component } from "react";
-import { Form, Input, Button, Icon, DatePicker } from "antd";
-import * as Yup from "yup";
-import { Formik, Field } from "formik";
-import moment from "moment";
-import { actionUpdateUserDetailRequest } from "../../../reducers/User/actions";
-import { connect } from "react-redux";
+import React, { PureComponent } from 'react';
+import { Icon, Skeleton } from 'antd';
+import _ from 'lodash';
+import { Wrapper, BodyWrapper } from 'styled';
+import { withRouter } from 'react-router-dom';
+import AvatarWrapper from 'components/Avatar';
+import { connect } from 'react-redux';
+import { getDetailUser } from 'services/User/actions.js';
 
-const FormItem = Form.Item;
 
-class MyProfile extends Component {
+class MyProfile extends PureComponent {
+    componentDidMount() {
+        const { match, auth, getDetailUser } = this.props;
+
+        let userId = match.params.id;
+
+        if (_.isEmpty(match.params)) {
+            userId = auth.user.id;
+        }
+
+        getDetailUser(userId);
+    }
+
     render() {
-        const {
-            id,
-            email,
-            phoneNumber,
-            fullName,
-            dayOfBirth,
-            actionUpdateUserDetailRequest
-        } = this.props;
-
-        console.log(this.props);
+        const { userInfo, auth } = this.props;
+        const { user, cars } = userInfo;
 
         return (
-            <Formik
-                enableReinitialize={true}
-                initialValues={{
-                    email: email,
-                    phoneNumber: phoneNumber,
-                    fullName: fullName,
-                    dayOfBirth:
-                        dayOfBirth === null
-                            ? null
-                            : moment(dayOfBirth, "DD/MM/YYYY")
-                }}
-                onSubmit={(values, { setFieldError }) => {
-                    actionUpdateUserDetailRequest(id, values, err => {
-                        Object.keys(err.response.data).forEach(field => {
-                            setFieldError(field, err.response.data[field] )
-                            // console.log(err.response.data[field]);
-                        });
-                        console.log(err.response);
-                    });
-                }}
-                validationSchema={Yup.object().shape({
-                    // Validate form field
-                    email: Yup.string()
-                        .required("Nhập Email.")
-                        .email("Email không hợp lệ."),
-                    fullName: Yup.string()
-                        .required("Nhập Họ Tên.")
-                        .min(2, "Họ Tên có ít nhất 2 ký tự"),
-                    phoneNumber: Yup.string().required("Nhập số điện thoại."),
-                    dayOfBirth: Yup.string().required("Chọn ngày sinh.")
-                })}
-                render={({
-                    setFieldValue,
-                    values,
-                    touched,
-                    errors,
-                    handleSubmit
-                }) => (
-                    <form
-                        onSubmit={handleSubmit}
-                        className="trip-booking__form"
-                    >
-                        <div className="row">
-                            <div className="col-3 text-right">
-                                <label className="mb-0 ant-form-item-required">
-                                    Email
-                                </label>
-                            </div>
-                            <div className="col-9">
-                                <FormItem
-                                    validateStatus={
-                                        touched.email && errors.email && "error"
-                                    }
-                                    help={touched.email && errors.email}
-                                >
-                                    <Field
-                                        name="email"
-                                        render={({ field }) => (
-                                            <Input
-                                                suffix={
-                                                    <Icon
-                                                        type="mail"
-                                                        style={{
-                                                            color:
-                                                                touched.email &&
-                                                                errors.email
-                                                                    ? "#f5222d"
-                                                                    : "rgba(0,0,0,.25)"
-                                                        }}
-                                                    />
+            <div className="container">
+                <GoBack />
+                <BodyWrapper>
+                    <div className="row">
+                        <div className="col-3">
+                            <Skeleton
+                                active
+                                avatar
+                                loading={userInfo.isLoading}
+                                paragraph={{ rows: 4 }}
+                            >
+                                <AvatarWrapper
+                                    registerDate={user.registerDate}
+                                    fullName={user.fullName}
+                                    userType={auth.user.userType}
+                                    rate={user.rate}
+                                    avatar={user.avatar}
+                                />
+                            </Skeleton>
+                        </div>
+                        <div className="col-9">
+                            <Wrapper>
+                                <h5 className="font-weight-normal d-flex align-items-center mb-4">
+                                    <Icon type="user" className="mr-1" />
+                                    Driver information
+                                </h5>
+                                <div className="form-group row">
+                                    <label className="col-sm-3">Email:</label>
+                                    <div className="col-sm-9">{user.email}</div>
+                                </div>
+                                <div className="form-group row">
+                                    <label className="col-sm-3">
+                                        Full Name:
+                                    </label>
+                                    <div className="col-sm-9">
+                                        {user.fullName}
+                                    </div>
+                                </div>
+                                <div className="form-group row">
+                                    <label className="col-sm-3">
+                                        Day of birth:
+                                    </label>
+                                    <div className="col-sm-9">{user.DOB}</div>
+                                </div>
+                                <div className="form-group row">
+                                    <label className="col-sm-3">
+                                        Phone number:
+                                    </label>
+                                    <div className="col-sm-9">
+                                        {user.phoneNumber}
+                                    </div>
+                                </div>
+                                {!_.isEmpty(cars) &&
+                                    _.map(cars, (car, index) => {
+                                        return (
+                                            <div
+                                                key={index}
+                                                className={
+                                                    _.isEmpty(cars)
+                                                        ? 'd-none'
+                                                        : ''
                                                 }
-                                                type="email"
-                                                size="large"
-                                                placeholder="Nhập email..."
-                                                {...field}
-                                            />
-                                        )}
-                                    />
-                                </FormItem>
-                            </div>
-                        </div>
-                        <div className="row">
-                            <div className="col-3 text-right">
-                                <label className="mb-0 ant-form-item-required">
-                                    Họ Tên
-                                </label>
-                            </div>
-                            <div className="col-9">
-                                <FormItem
-                                    validateStatus={
-                                        touched.fullName &&
-                                        errors.fullName &&
-                                        "error"
-                                    }
-                                    help={touched.fullName && errors.fullName}
-                                >
-                                    <Field
-                                        name="fullName"
-                                        render={({ field }) => (
-                                            <Input
-                                                suffix={
+                                            >
+                                                <h5 className="font-weight-normal d-flex align-items-center mb-4 mt-5">
                                                     <Icon
-                                                        type="user"
-                                                        style={{
-                                                            color:
-                                                                "rgba(0,0,0,.25)"
-                                                        }}
-                                                    />
-                                                }
-                                                type="text"
-                                                size="large"
-                                                placeholder="Nhập Tên đầy đủ..."
-                                                {...field}
-                                            />
-                                        )}
-                                    />
-                                </FormItem>
-                            </div>
+                                                        type="car"
+                                                        className="mr-1"
+                                                    />{' '}
+                                                    Car information
+                                                </h5>
+                                                <div className="form-group row">
+                                                    <label className="col-sm-3">
+                                                        Carmakers:
+                                                    </label>
+                                                    <div className="col-sm-9">
+                                                        {car.autoMakers}
+                                                    </div>
+                                                </div>
+                                                <div className="form-group row">
+                                                    <label className="col-sm-3">
+                                                        Car Name:
+                                                    </label>
+                                                    <div className="col-sm-9">
+                                                        {car.carName}
+                                                    </div>
+                                                </div>
+                                                <div className="form-group row">
+                                                    <label className="col-sm-3">
+                                                        Car seats:
+                                                    </label>
+                                                    <div className="col-sm-9">
+                                                        {car.carSeats}
+                                                    </div>
+                                                </div>
+                                                <div className="form-group row">
+                                                    <label className="col-sm-3">
+                                                        Car model:
+                                                    </label>
+                                                    <div className="col-sm-9">
+                                                        {car.carModel}
+                                                    </div>
+                                                </div>
+                                                <div className="form-group row">
+                                                    <label className="col-sm-3">
+                                                        Car certificate:
+                                                    </label>
+                                                    <div className="col-sm-9">
+                                                        {car.carCertificate}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        );
+                                    })}
+                            </Wrapper>
                         </div>
-                        <div className="row">
-                            <div className="col-3 text-right">
-                                <label className="mb-0 ant-form-item-required">
-                                    Số Điện Thoại
-                                </label>
-                            </div>
-                            <div className="col-9">
-                                <FormItem
-                                    validateStatus={
-                                        touched.phoneNumber &&
-                                        errors.phoneNumber &&
-                                        "error"
-                                    }
-                                    help={
-                                        touched.phoneNumber &&
-                                        errors.phoneNumber
-                                    }
-                                >
-                                    <Field
-                                        name="phoneNumber"
-                                        render={({ field }) => (
-                                            <Input
-                                                suffix={
-                                                    <Icon
-                                                        type="phone"
-                                                        style={{
-                                                            color:
-                                                                "rgba(0,0,0,.25)"
-                                                        }}
-                                                    />
-                                                }
-                                                type="text"
-                                                size="large"
-                                                placeholder="Nhập số điện thoại..."
-                                                {...field}
-                                            />
-                                        )}
-                                    />
-                                </FormItem>
-                            </div>
-                        </div>
-                        <div className="row">
-                            <div className="col-3 text-right">
-                                <label className="mb-0 ant-form-item-required">
-                                    Ngày Sinh
-                                </label>
-                            </div>
-                            <div className="col-9">
-                                <FormItem
-                                    validateStatus={
-                                        touched.dayOfBirth &&
-                                        errors.dayOfBirth &&
-                                        "error"
-                                    }
-                                    help={
-                                        touched.dayOfBirth && errors.dayOfBirth
-                                    }
-                                >
-                                    <DatePicker
-                                        value={values.dayOfBirth}
-                                        format="DD/MM/YYYY"
-                                        size="large"
-                                        className="d-block"
-                                        name="dayOfBirth"
-                                        onChange={value =>
-                                            setFieldValue(
-                                                "dayOfBirth",
-                                                value === null
-                                                    ? undefined
-                                                    : value
-                                            )
-                                        }
-                                    />
-                                </FormItem>
-                            </div>
-                        </div>
-                        <div className="row">
-                            <div className="col-6 offset-3">
-                                <Button
-                                    htmlType="submit"
-                                    type="primary"
-                                    size="large"
-                                >
-                                    Cập Nhật
-                                </Button>
-                            </div>
-                        </div>
-                    </form>
-                )}
-            />
+                    </div>
+                </BodyWrapper>
+            </div>
         );
     }
 }
 
+const mapStateToProps = state => {
+    return {
+        auth: state.Authenticate,
+        userInfo: state.UserInfo
+    };
+};
+
 export default connect(
-    null,
-    { actionUpdateUserDetailRequest }
-)(MyProfile);
+    mapStateToProps,
+    { getDetailUser }
+)(withRouter(MyProfile));

@@ -18,10 +18,7 @@ class SignInForm extends Component {
             errors,
             handleSubmit,
             isSubmitting
-        } = this.props;
-
-        console.log(this.props);
-        
+        } = this.props;        
 
         return (
             <ModalCustom

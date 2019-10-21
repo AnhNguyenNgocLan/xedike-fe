@@ -5,7 +5,7 @@ import { Wrapper, BodyWrapper, Thumb } from "./styled";
 import _ from "lodash";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
-import Detail from "./MyProfile";
+import Detail from "./EditProfile";
 import MyPassword from "./MyPassword";
 import { actionGetUserDetailRequest } from "../../reducers/User/actions";
 import moment from "moment";

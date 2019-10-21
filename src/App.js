@@ -6,8 +6,8 @@ import Header from "./components/Header";
 import Profile from "./container/Profile";
 import TripSearchResult from "./container/Trips/TripSearchResult";
 import BookingTripDetail from "./container/BookingDetails";
-import MyTrip from "./container/Profile/MyTrip";
-import DriverInfo from "./container/Profile/DriverInfo";
+import MyTrip from "./container/MyTrips";
+import DriverInfo from "./container/Profile";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import setHeader from "./utils/setHeader";
 import { connect } from "react-redux";
@@ -29,7 +29,7 @@ function App(props) {
                     <Route path="/" exact component={HomePage}></Route>
                     <Route path="/driver-profile/:id" exact component={DriverInfo}></Route>
                     <Route
-                        path="/profile"
+                        path="/edit-profile"
                         exact
                         component={isAuthenticated ? Profile : HomePage}
                     ></Route>
