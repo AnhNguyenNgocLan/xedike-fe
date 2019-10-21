@@ -91,18 +91,6 @@ class Profile extends Component {
                                             : "Tài Xế"}
                                     </div>
                                 </div>
-
-                                {/* <div className="flex-grow-1">
-                                    <div className="col-10 offset-2">
-                                        <Button
-                                            htmlType="submit"
-                                            type="primary"
-                                            size="large"
-                                        >
-                                            Cập Nhật Thông Tin
-                                        </Button>
-                                    </div>
-                                </div> */}
                             </div>
                         </Wrapper>
                     </Skeleton>

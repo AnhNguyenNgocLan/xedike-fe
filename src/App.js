@@ -4,6 +4,7 @@ import HomePage from "./container/Home";
 //import NotFound from "./container/NotFound";
 import Header from "./components/Header";
 import Profile from "./container/Profile";
+import UserProfile from "./container/Profile/MyProfile";
 import TripSearchResult from "./container/Trips/TripSearchResult";
 import BookingTripDetail from "./container/BookingDetails";
 import MyTrip from "./container/MyTrips";
@@ -26,8 +27,7 @@ function App(props) {
             <BrowserRouter>
                 <Header />
                 <Switch>
-                    <Route path="/" exact component={HomePage}></Route>
-                    <Route path="/driver-profile/:id" exact component={DriverInfo}></Route>
+                    <Route path="/" exact component={HomePage}></Route>                    
                     <Route
                         path="/edit-profile"
                         exact
@@ -38,13 +38,17 @@ function App(props) {
                         exact
                         component={TripSearchResult}
                     ></Route>
+                     <Route
+                        path="/driver-profile/:id"
+                        exact
+                        component={UserProfile}
+                    ></Route>
                     <Route path="/my-trip" exact component={MyTrip}></Route>
                     <Route
                         path="/book-trip/:id"
                         exact
                         component={BookingTripDetail}
                     ></Route>
-
                 </Switch>
             </BrowserRouter>
         </div>

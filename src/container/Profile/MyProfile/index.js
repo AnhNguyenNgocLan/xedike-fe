@@ -1,16 +1,16 @@
-import React, { PureComponent } from 'react';
-import { Icon, Skeleton } from 'antd';
-import _ from 'lodash';
-import { Wrapper, BodyWrapper } from 'styled';
-import { withRouter } from 'react-router-dom';
-import AvatarWrapper from 'components/Avatar';
-import { connect } from 'react-redux';
-import { getDetailUser } from 'services/User/actions.js';
-
+import React, { PureComponent } from "react";
+import { Icon, Skeleton } from "antd";
+import Kid from "../../../assets/images/kid.jpg";
+import { Wrapper, BodyWrapper, Thumb } from "../../Profile/styled";
+import moment from "moment";
+import _ from "lodash";
+import { withRouter } from "react-router-dom";
+import { connect } from "react-redux";
+import { actionGetUserDetailRequest } from "../../../reducers/User/actions";
 
 class MyProfile extends PureComponent {
     componentDidMount() {
-        const { match, auth, getDetailUser } = this.props;
+        const { match, auth, actionGetUserDetailRequest } = this.props;
 
         let userId = match.params.id;
 
@@ -18,130 +18,100 @@ class MyProfile extends PureComponent {
             userId = auth.user.id;
         }
 
-        getDetailUser(userId);
+        actionGetUserDetailRequest(userId);
     }
 
     render() {
         const { userInfo, auth } = this.props;
-        const { user, cars } = userInfo;
+        const { data } = userInfo;
 
         return (
             <div className="container">
-                <GoBack />
+                {/* <GoBack /> */}
                 <BodyWrapper>
-                    <div className="row">
-                        <div className="col-3">
-                            <Skeleton
-                                active
-                                avatar
-                                loading={userInfo.isLoading}
-                                paragraph={{ rows: 4 }}
-                            >
-                                <AvatarWrapper
-                                    registerDate={user.registerDate}
-                                    fullName={user.fullName}
-                                    userType={auth.user.userType}
-                                    rate={user.rate}
-                                    avatar={user.avatar}
-                                />
-                            </Skeleton>
-                        </div>
-                        <div className="col-9">
-                            <Wrapper>
-                                <h5 className="font-weight-normal d-flex align-items-center mb-4">
-                                    <Icon type="user" className="mr-1" />
-                                    Driver information
-                                </h5>
-                                <div className="form-group row">
-                                    <label className="col-sm-3">Email:</label>
-                                    <div className="col-sm-9">{user.email}</div>
-                                </div>
-                                <div className="form-group row">
-                                    <label className="col-sm-3">
-                                        Full Name:
-                                    </label>
-                                    <div className="col-sm-9">
-                                        {user.fullName}
-                                    </div>
-                                </div>
-                                <div className="form-group row">
-                                    <label className="col-sm-3">
-                                        Day of birth:
-                                    </label>
-                                    <div className="col-sm-9">{user.DOB}</div>
-                                </div>
-                                <div className="form-group row">
-                                    <label className="col-sm-3">
-                                        Phone number:
-                                    </label>
-                                    <div className="col-sm-9">
-                                        {user.phoneNumber}
-                                    </div>
-                                </div>
-                                {!_.isEmpty(cars) &&
-                                    _.map(cars, (car, index) => {
-                                        return (
-                                            <div
-                                                key={index}
-                                                className={
-                                                    _.isEmpty(cars)
-                                                        ? 'd-none'
-                                                        : ''
-                                                }
-                                            >
-                                                <h5 className="font-weight-normal d-flex align-items-center mb-4 mt-5">
+                    <Skeleton
+                        loading={data.isLoading}
+                        active
+                        paragraph={{ rows: 4 }}
+                    >
+                        <Wrapper>
+                            <h5 className="font-weight-normal d-flex align-items-center mb-3">
+                                <Icon type="user" className="mr-1" /> Thông Tin
+                                Tài Xế
+                            </h5>
+                            <div className="d-flex align-items-center">
+                                <div className="flex-grow-1 d-inline-flex align-items-center">
+                                    <Thumb
+                                        src={Kid}
+                                        alt="driver"
+                                        className="mr-2"
+                                    />
+                                    <div>
+                                        <p className="mb-1">{data.fullName}</p>
+                                        <div className="d-flex align-items-center">
+                                            {data.userType === "driver" ? (
+                                                <>
                                                     <Icon
-                                                        type="car"
+                                                        type="star"
+                                                        theme="twoTone"
                                                         className="mr-1"
-                                                    />{' '}
-                                                    Car information
-                                                </h5>
-                                                <div className="form-group row">
-                                                    <label className="col-sm-3">
-                                                        Carmakers:
-                                                    </label>
-                                                    <div className="col-sm-9">
-                                                        {car.autoMakers}
-                                                    </div>
-                                                </div>
-                                                <div className="form-group row">
-                                                    <label className="col-sm-3">
-                                                        Car Name:
-                                                    </label>
-                                                    <div className="col-sm-9">
-                                                        {car.carName}
-                                                    </div>
-                                                </div>
-                                                <div className="form-group row">
-                                                    <label className="col-sm-3">
-                                                        Car seats:
-                                                    </label>
-                                                    <div className="col-sm-9">
-                                                        {car.carSeats}
-                                                    </div>
-                                                </div>
-                                                <div className="form-group row">
-                                                    <label className="col-sm-3">
-                                                        Car model:
-                                                    </label>
-                                                    <div className="col-sm-9">
-                                                        {car.carModel}
-                                                    </div>
-                                                </div>
-                                                <div className="form-group row">
-                                                    <label className="col-sm-3">
-                                                        Car certificate:
-                                                    </label>
-                                                    <div className="col-sm-9">
-                                                        {car.carCertificate}
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        );
-                                    })}
-                            </Wrapper>
+                                                        twoToneColor="#ffc107"
+                                                    />
+                                                    4
+                                                </>
+                                            ) : (
+                                                <></>
+                                            )}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="flex-grow-1">
+                                    <div className="d-flex align-items-center mb-1">
+                                        {/* TODO: CALL API NUMBER OF TRIP OF USER AFTER FISNISHED */}
+                                        Tổng chuyến đi: {data.numberOfTrips}
+                                    </div>
+                                    <div className="d-flex align-items-center">
+                                        Ngày gia nhập:{" "}
+                                        {moment(data.registerDate).format(
+                                            "DD/MM/YYYY"
+                                        )}
+                                    </div>
+                                </div>
+                                <div className="flex-grow-1">
+                                    <div className="mb-1">
+                                        {data.userType === "passenger"
+                                            ? "Hành Khách"
+                                            : "Tài Xế"}
+                                    </div>
+                                </div>
+                            </div>
+                        </Wrapper>
+                    </Skeleton>
+
+                    <Wrapper>
+                        <h5 className="font-weight-normal d-flex align-items-center mb-4">
+                            <Icon type="user" className="mr-1" />
+                            Thông tin Chi Tiết
+                        </h5>
+                        <div className="form-group row">
+                            <div className="col-3 text-right">Email:</div>
+                            <div className="col-sm-9">{data.email}</div>
                         </div>
-                    </div>
+                        <div className="form-group row">
+                            <div className="col-3 text-right">Full Name:</div>
+                            <div className="col-sm-9">{data.fullName}</div>
+                        </div>
+                        <div className="form-group row">
+                            <div className="col-3 text-right">Day of birth:</div>
+                            <div className="col-sm-9">
+                                {moment(data.dayOfBirth).format("DD/MM/YYYY")}
+                            </div>
+                        </div>
+                        <div className="form-group row">
+                            <div className="col-3 text-right">Phone number:</div>
+                            <div className="col-sm-9">{data.phoneNumber}</div>
+                        </div>
+                    </Wrapper>
                 </BodyWrapper>
             </div>
         );
@@ -150,12 +120,12 @@ class MyProfile extends PureComponent {
 
 const mapStateToProps = state => {
     return {
-        auth: state.Authenticate,
-        userInfo: state.UserInfo
+        auth: state.authReducer,
+        userInfo: state.user
     };
 };
 
 export default connect(
     mapStateToProps,
-    { getDetailUser }
+    { actionGetUserDetailRequest }
 )(withRouter(MyProfile));
