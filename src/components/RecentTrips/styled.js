@@ -21,6 +21,7 @@ export const RecentTripSection = styled.section`
 export const Thumb = styled.img`
     width: 50px;
     height: 50px;
+    border-radius: 50%;
 `;
 
 export const Price = styled.div`

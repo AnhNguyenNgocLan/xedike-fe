@@ -49,7 +49,9 @@ class BookingTrip extends Component {
 
     render() {
         const { touched, errors, values, setFieldValue, trips } = this.props;
-        const tripData = trips.data;       
+        const tripData = trips.data;   
+        console.log(tripData.driverID);
+            
 
         const locations = _.map(this.state.locationArr, (item, index) => {
             return (
@@ -85,7 +87,10 @@ class BookingTrip extends Component {
                                 </div>
                             </div>
                             <div className="flex-grow-1">
-                                <div className="mb-1 d-flex align-items-center">Honda</div>
+                                <div className="mb-1 d-flex align-items-center">
+                                    {/* TODO: Ten xe */}
+                                     Ten XE
+                                     </div>
                                 <div className="d-flex align-items-center">
                                     <Icon type="team" className="mr-1" />{tripData.availableSeats}
                                 </div>
@@ -97,7 +102,7 @@ class BookingTrip extends Component {
                                     className="mr-2"
                                 />
                                 <div>
-                                    <p className="mb-1">Baby-Aimee</p>
+                                    <p className="mb-1"> {tripData.driverID && tripData.driverID.fullName}</p>
                                     <div className="d-flex align-items-center">
                                         <Icon
                                             type="star"

@@ -54,8 +54,7 @@ class Header extends Component {
         const { auth } = this.props;
         const { isAuthenticated } = auth;
         const isDriver = auth.user.userType;
-        console.log(isDriver);
-
+        
         const menu = (
             <Menu>
                 <Menu.Item>

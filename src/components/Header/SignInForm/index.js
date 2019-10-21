@@ -20,6 +20,9 @@ class SignInForm extends Component {
             isSubmitting
         } = this.props;
 
+        console.log(this.props);
+        
+
         return (
             <ModalCustom
                 title={<h3 className="modal-title text-center">Đăng Nhập</h3>}
