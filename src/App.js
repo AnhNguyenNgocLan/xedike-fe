@@ -8,6 +8,7 @@ import UserProfile from "./container/Profile/MyProfile";
 import TripSearchResult from "./container/Trips/TripSearchResult";
 import BookingTripDetail from "./container/BookingDetails";
 import MyTrip from "./container/MyTrips";
+import PageNotFound from "./container/NotFound";
 import DriverInfo from "./container/Profile";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import setHeader from "./utils/setHeader";
@@ -27,7 +28,7 @@ function App(props) {
             <BrowserRouter>
                 <Header />
                 <Switch>
-                    <Route path="/" exact component={HomePage}></Route>                    
+                    <Route path="/" exact component={HomePage}></Route>
                     <Route
                         path="/edit-profile"
                         exact
@@ -38,10 +39,10 @@ function App(props) {
                         exact
                         component={TripSearchResult}
                     ></Route>
-                     <Route
+                    <Route
                         path="/driver-profile/:id"
                         exact
-                        component={UserProfile}
+                        component={isAuthenticated ? UserProfile : PageNotFound}
                     ></Route>
                     <Route path="/my-trip" exact component={MyTrip}></Route>
                     <Route

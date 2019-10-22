@@ -18,7 +18,7 @@ class SignInForm extends Component {
             errors,
             handleSubmit,
             isSubmitting
-        } = this.props;        
+        } = this.props;
 
         return (
             <ModalCustom
@@ -137,6 +137,7 @@ const withFormikHOC = withFormik({
                 resetForm();
             },
             err => {
+                setSubmitting(false);
                 Object.keys({ email: "", password: "" }).forEach(field => {
                     setFieldError(field, err.response.data);
                 });
