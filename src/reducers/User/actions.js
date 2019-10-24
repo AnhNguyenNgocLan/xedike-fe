@@ -1,6 +1,6 @@
 import * as Types from "./actionTypes";
 import callAPI from "../../utils/apiCaller";
-import swal from 'sweetalert';
+import swal from "sweetalert";
 
 export const actionGetUserDetailRequest = id => {
     return dispatch => {
@@ -26,8 +26,8 @@ export const actionUpdateUserDetailRequest = (id, data, showErr) => {
                     payload: res.data
                 });
                 swal({
-                    text: 'Cập Nhật thành công',
-                    icon: 'success',
+                    text: "Cập Nhật thành công",
+                    icon: "success",
                     buttons: false,
                     timer: 1500
                 });
@@ -38,3 +38,24 @@ export const actionUpdateUserDetailRequest = (id, data, showErr) => {
     };
 };
 
+export const actionUploadUserAvatar = (id, data, config, callback) => {
+    return dispatch => {
+        return callAPI(`api/users/upload-avatar/${id}`, "POST", data, config)
+            .then(res => {
+                dispatch({
+                    type: Types.UPLOAD_USER_AVATAR,
+                    payload: res.data
+                });
+                swal({
+                    text: "Đổi hình đại diện thành công",
+                    icon: "success",
+                    buttons: false,
+                    timer: 1500
+                });
+                callback();
+            })
+            .catch(err => {
+                console.log(err.response);
+            });
+    };
+};

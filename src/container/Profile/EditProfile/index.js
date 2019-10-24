@@ -19,7 +19,6 @@ class EditProfile extends Component {
             actionUpdateUserDetailRequest
         } = this.props;
 
-        console.log(this.props);
 
         return (
             <Formik

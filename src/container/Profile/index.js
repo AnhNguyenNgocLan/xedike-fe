@@ -1,13 +1,13 @@
 import React, { Component } from "react";
-import Kid from "../../assets/images/kid.jpg";
 import { Icon, Skeleton } from "antd";
-import { Wrapper, BodyWrapper, Thumb } from "./styled";
+import { Wrapper, BodyWrapper } from "./styled";
 import _ from "lodash";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import Detail from "./EditProfile";
 import MyPassword from "./MyPassword";
 import { actionGetUserDetailRequest } from "../../reducers/User/actions";
+import AvatarWrapper from "../../components/Avatar/index";
 import moment from "moment";
 
 class Profile extends Component {
@@ -43,33 +43,12 @@ class Profile extends Component {
                                 Cá Nhân
                             </h5>
                             <div className="d-flex align-items-center">
-                                <div className="flex-grow-1 d-inline-flex align-items-center">
-                                    <Thumb
-                                        src={Kid}
-                                        alt="driver"
-                                        className="mr-2"
+                                <div className="flex-grow-1">
+                                    <AvatarWrapper
+                                        fullName={userDetails.fullName}
+                                        userType={userDetails.userType}
+                                        avatar={userDetails.avatar}
                                     />
-                                    <div>
-                                        <p className="mb-1">
-                                            {userDetails.fullName}
-                                        </p>
-                                        <div className="d-flex align-items-center">
-                                            {userDetails.userType ===
-                                            "driver" ? (
-                                                <>
-                                                    <Icon
-                                                        type="star"
-                                                        theme="twoTone"
-                                                        className="mr-1"
-                                                        twoToneColor="#ffc107"
-                                                    />
-                                                    4
-                                                </>
-                                            ) : (
-                                                <></>
-                                            )}
-                                        </div>
-                                    </div>
                                 </div>
                                 <div className="flex-grow-1">
                                     <div className="d-flex align-items-center mb-1">

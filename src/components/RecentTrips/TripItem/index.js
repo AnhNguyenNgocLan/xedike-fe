@@ -69,7 +69,7 @@ class TripItem extends Component {
                                         to={`/driver-profile/${item.driverID && item.driverID._id}`}
                                     >
                                         <Thumb
-                                            src={Kid}
+                                            src={item.driverID && item.driverID.avatar}
                                             alt="driver"
                                             className="mr-2"
                                         />
