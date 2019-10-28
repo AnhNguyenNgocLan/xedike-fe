@@ -49,7 +49,7 @@ class AvatarWrapper extends Component {
     };
 
     render() {
-        const { avatar, fullName } = this.props;
+        const { avatar, fullName } = this.props;        
 
         const { isLoading } = this.state;
         return (

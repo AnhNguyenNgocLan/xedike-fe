@@ -12,15 +12,24 @@ var initialState = {
         phoneNumber: "",
         dayOfBirth: null,
         avatar: ""
-    }
+    },
+    vehicles: [
+        {
+            vehicleBrand: "",
+            numOfSeats: "",
+            vehicleName: "",
+            vehicleLisence: "",
+            driverID: ""
+        }
+    ]
 };
 
 const user = (state = initialState, action) => {
     switch (action.type) {
-        case Types.GET_USER_DETAILS:
+        case Types.GET_USER_DETAILS:            
             return {
                 isLoading: false,
-                data: { ...action.payload }
+                ...action.payload
             };
 
         case Types.UPDATE_USER_DETAILS:
@@ -35,7 +44,6 @@ const user = (state = initialState, action) => {
         case Types.UPLOAD_USER_AVATAR:
             let uploadAvatar = { ...state };
             uploadAvatar.data.avatar = action.payload.avatar;
-            console.log(action.payload);            
 
             return uploadAvatar;
 

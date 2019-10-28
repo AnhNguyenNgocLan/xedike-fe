@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import Kid from "../../../assets/images/kid.jpg";
+import Kid from "../../../assets/images/user-ic.png";
 import { Nav, NavItem } from "reactstrap";
 import { Link } from "react-router-dom";
 import _ from "lodash";
@@ -28,6 +28,8 @@ class TripItem extends Component {
                 ) : (
                     <div className="container">
                         {_.map(trip, (item, index) => {
+                            console.log(item);
+                            
                             return (
                                 <div
                                     key={index}
@@ -68,11 +70,20 @@ class TripItem extends Component {
                                         className="flex-grow-1 d-inline-flex text-dark"
                                         to={`/driver-profile/${item.driverID && item.driverID._id}`}
                                     >
-                                        <Thumb
+                                        {item.driverID && item.driverID.avatar !== undefined ? (
+                                            <Thumb
                                             src={item.driverID && item.driverID.avatar}
                                             alt="driver"
                                             className="mr-2"
                                         />
+                                        ) : (
+                                        <Thumb
+                                            src={Kid}
+                                            alt="driver"
+                                            className="mr-2"
+                                        />
+                                        )}
+                                        
                                         <div>
                                             <p className="mb-1">
                                                 {item.driverID && item.driverID.fullName}

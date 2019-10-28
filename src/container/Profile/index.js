@@ -27,7 +27,9 @@ class Profile extends Component {
 
     render() {
         const { userInfo } = this.props;
-        const userDetails = userInfo.data;
+
+        const { user, vehicles } = userInfo;
+        console.log(vehicles);
 
         return (
             <div className="container">
@@ -45,33 +47,108 @@ class Profile extends Component {
                             <div className="d-flex align-items-center">
                                 <div className="flex-grow-1">
                                     <AvatarWrapper
-                                        fullName={userDetails.fullName}
-                                        userType={userDetails.userType}
-                                        avatar={userDetails.avatar}
+                                        fullName={user && user.fullName}
+                                        userType={user && user.userType}
+                                        avatar={user && user.avatar}
                                     />
                                 </div>
                                 <div className="flex-grow-1">
                                     <div className="d-flex align-items-center mb-1">
                                         {/* TODO: CALL API NUMBER OF TRIP OF USER AFTER FISNISHED */}
                                         Tổng chuyến đi:{" "}
-                                        {userDetails.numberOfTrips}
+                                        {user && user.numberOfTrips}
                                     </div>
                                     <div className="d-flex align-items-center">
                                         Ngày gia nhập:{" "}
-                                        {moment(
-                                            userDetails.registerDate
-                                        ).format("DD/MM/YYYY")}
+                                        {user &&
+                                            moment(user.registerDate).format(
+                                                "DD/MM/YYYY"
+                                            )}
                                     </div>
                                 </div>
                                 <div className="flex-grow-1">
-                                    <div className="mb-1">
-                                        {userDetails.userType === "passenger"
+                                    <div className="d-flex align-items-center mb-1">
+                                        {user && user.userType === "passenger"
                                             ? "Hành Khách"
                                             : "Tài Xế"}
+                                    </div>
+                                    <div className="d-flex align-items-center">
+                                        Email:{" "}
+                                        {user && user.email}
                                     </div>
                                 </div>
                             </div>
                         </Wrapper>
+                        {user && user.userType === "driver" ? (
+                            <Wrapper>
+                                <h5 className="font-weight-normal d-flex align-items-center mb-3">
+                                    <Icon type="car" className="mr-1" /> Thông
+                                    Tin Xe
+                                </h5>
+                                {!_.isEmpty(vehicles) &&
+                                    _.map(vehicles, (veh, index) => {
+                                        return (
+                                            <div
+                                                key={index}
+                                                className={
+                                                    _.isEmpty(vehicles)
+                                                        ? "d-none"
+                                                        : "mb-4 ml-4 container"
+                                                }
+                                            >
+                                                <div className="row">
+                                                    <div className="col-sm-6">
+                                                        <div className="row">
+                                                            <label className="col-sm-3 mr-0 text-right">
+                                                                Tên Xe:
+                                                            </label>
+                                                            <div className="col-sm-9 text-left">
+                                                                {veh.vehicleName}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                
+                                                    <div className="col-sm-6">
+                                                        <div className="row">
+                                                            <label className="col-sm-3 mr-0 text-right">
+                                                                Hãng Xe:
+                                                            </label>
+                                                            <div className="col-sm-9 text-left ">
+                                                                {veh.vehicleBrand}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div className="row">
+                                                    <div className="col-sm-6">
+                                                        <div className="row">
+                                                            <label className="col-sm-3 mr-0 text-right">
+                                                                Biển Số:
+                                                            </label>
+                                                            <div className="col-sm-9 text-left">
+                                                                {veh.vehicleLisence}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                
+                                                    <div className="col-sm-6">
+                                                        <div className="row">
+                                                            <label className="col-sm-3 mr-0 text-right">
+                                                                Số ghế:
+                                                            </label>
+                                                            <div className="col-sm-9 text-left">
+                                                                {veh.numOfSeats}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        );
+                                    })}
+                            </Wrapper>
+                        ) : (
+                            <></>
+                        )}
                     </Skeleton>
                     <Wrapper className="mt-5">
                         <Skeleton
@@ -85,23 +162,24 @@ class Profile extends Component {
                             </h5>
 
                             <Detail
-                                email={userDetails.email}
-                                fullName={userDetails.fullName}
-                                dayOfBirth={moment(
-                                    userDetails.dayOfBirth
-                                ).format("DD/MM/YYYY")}
-                                phoneNumber={userDetails.phoneNumber}
-                                id={userDetails._id}
+                                email={user && user.email}
+                                fullName={user && user.fullName}
+                                dayOfBirth={
+                                    user &&
+                                    moment(user.dayOfBirth).format("DD/MM/YYYY")
+                                }
+                                phoneNumber={user && user.phoneNumber}
+                                id={user && user._id}
                             />
                         </Skeleton>
                     </Wrapper>
                     <Wrapper className="mt-5">
                         <h5 className="font-weight-normal d-flex align-items-center mb-3">
-                            <Icon type="smile" className="mr-1" /> Thay Đổi Mật
+                            <Icon type="lock" className="mr-1" /> Thay Đổi Mật
                             Khẩu
                         </h5>
 
-                        <MyPassword id={userDetails._id} />
+                        <MyPassword id={user && user._id} />
                     </Wrapper>
                 </BodyWrapper>
             </div>

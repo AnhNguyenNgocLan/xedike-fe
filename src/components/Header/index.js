@@ -7,6 +7,7 @@ import { FaUserCircle } from "react-icons/fa";
 import SignInForm from "./SignInForm";
 import SignUpForm from "./SignUpForm";
 import AddTripForm from "./AddTripForm";
+import AddVehicleForm from "./AddVehicleForm";
 import { Menu, Avatar, Dropdown } from "antd";
 import { connect } from "react-redux";
 import { actionLogout } from "../../reducers/Auths/actions";
@@ -21,7 +22,8 @@ class Header extends Component {
             signInVisible: false,
             signUpVisible: false,
             dropdownOpen: false,
-            addTripVisible: false
+            addTripVisible: false,
+            addVehicleVisible: false
         };
     }
 
@@ -49,12 +51,21 @@ class Header extends Component {
         this.setState({ addTripVisible: value });
     };
 
+    addVehicleModal = value => {
+        this.setState({ addVehicleVisible: value });
+    };
+
     render() {
-        const { signInVisible, signUpVisible, addTripVisible } = this.state;
+        const {
+            signInVisible,
+            signUpVisible,
+            addTripVisible,
+            addVehicleVisible
+        } = this.state;
         const { auth } = this.props;
         const { isAuthenticated } = auth;
         const isDriver = auth.user.userType;
-        
+
         const menu = (
             <Menu>
                 <Menu.Item>
@@ -84,28 +95,32 @@ class Header extends Component {
                     </Link>
 
                     <Collapse isOpen={this.state.isOpen} navbar>
-                        <Nav className="ml-auto align-items-center" navbar>
-                            <NavItem className="mr-3">
-                                <Link
-                                    to="/trips"
-                                    className="text-white cursor-point"
-                                >
-                                    Chuyến Xe
-                                </Link>
-                            </NavItem>
-                            <NavItem className="mr-3">
-                                <Link
-                                    to="/addCar"
-                                    className="text-white cursor-point"
-                                >
-                                    Thêm Xe
-                                </Link>
-                            </NavItem>
+                        <Nav className="ml-auto align-items-center" navbar>                          
 
                             {isAuthenticated ? (
                                 <>
                                     {isDriver === "driver" ? (
                                         <>
+                                            <NavItem className="mr-3">
+                                                <p
+                                                    className="text-white cursor-point mb-0"
+                                                    onClick={() =>
+                                                        this.addVehicleModal(
+                                                            true
+                                                        )
+                                                    }
+                                                >
+                                                    Thêm Xe
+                                                </p>
+                                                <AddVehicleForm
+                                                    addVehicleVisible={
+                                                        addVehicleVisible
+                                                    }
+                                                    addVehicleModal={
+                                                        this.addVehicleModal
+                                                    }
+                                                />
+                                            </NavItem>
                                             <NavItem className="mr-3">
                                                 <Button
                                                     type="button"

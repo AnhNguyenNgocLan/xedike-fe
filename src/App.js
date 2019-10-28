@@ -32,7 +32,7 @@ function App(props) {
                     <Route
                         path="/edit-profile"
                         exact
-                        component={isAuthenticated ? Profile : HomePage}
+                        component={isAuthenticated ? Profile : PageNotFound}
                     ></Route>
                     <Route
                         path="/trips/search"

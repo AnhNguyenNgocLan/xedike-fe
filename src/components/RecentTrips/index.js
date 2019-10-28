@@ -14,9 +14,7 @@ class RecentTrips extends Component {
     render() {
         const { trips, isHomepage, auth } = this.props;
         const { isLoading, data } = trips;
-        console.log(data);
-        
-
+       
         return (
             <RecentTripSection className="container">
                 <h4 className="mb-4 text-uppercase">

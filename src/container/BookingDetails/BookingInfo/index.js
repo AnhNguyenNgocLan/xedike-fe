@@ -277,7 +277,7 @@ class BookingTrip extends Component {
                                     <FormItem>
                                         <Input.TextArea
                                             name="note"
-                                            autosize={{ minRows: 5 }}
+                                            autoSize={{ minRows: 5 }}
                                             onChange={value =>
                                                 setFieldValue(
                                                     "note",

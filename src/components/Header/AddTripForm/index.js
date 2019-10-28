@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Form, Input, Button, Icon, Select, Spin } from "antd";
+import { Form, Button, Icon, Select, Spin } from "antd";
 import { object, string } from "yup";
 import { withFormik, Form as FormikForm } from "formik";
 import _ from "lodash";

@@ -1,0 +1,2 @@
+export const ADD_NEW_VEHICLE = "ADD_NEW_VEHICLE";
+export const GET_VEHICLE_BY_ID = "ADD_NEW_VEHICLE";
