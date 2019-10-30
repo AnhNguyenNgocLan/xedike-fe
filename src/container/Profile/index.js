@@ -28,8 +28,7 @@ class Profile extends Component {
     render() {
         const { userInfo } = this.props;
 
-        const { user, vehicles } = userInfo;
-        console.log(vehicles);
+        const { user, vehicles } = userInfo;       
 
         return (
             <div className="container">

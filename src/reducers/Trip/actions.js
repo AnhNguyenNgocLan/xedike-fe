@@ -62,17 +62,19 @@ export const actionCreateTripRequest = (trip, callback) => {
     };
 };
 
-export const actionGetMyTrip = () => {
-    return dispatch => {
-        return callAPI("api/users/my-trips", "GET", null)
-            .then(res => {
-                dispatch({
-                    type: Types.GET_MY_OWN_TRIP,
-                    payload: res.data
-                });
-            })
-            .catch(err => {
-                console.log(err.res);
-            });
-    };
-};
+// export const actionGetMyTrip = () => {
+//     return dispatch => {
+//         return callAPI("api/users/my-trips", "GET", null)
+//             .then(res => {
+//                 dispatch({
+//                     type: Types.GET_MY_OWN_TRIP,
+//                     payload: res.data
+//                 });
+//             })
+//             .catch(err => {
+//                 console.log(err.res);
+//             });
+//     };
+// };
+
+

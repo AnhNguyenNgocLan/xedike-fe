@@ -59,3 +59,32 @@ export const actionUploadUserAvatar = (id, data, config, callback) => {
             });
     };
 };
+
+export const ratingDriver = (id, data) => {
+    return dispatch => {
+        return callAPI(`api/users/rating/${id}`, "PUT", { rating: data })
+            .then(res => {
+                dispatch({
+                    type: Types.RATING,
+                    payload: res.data
+                });
+                swal({
+                    text: "Cảm ơn bạn đã đánh giá",
+                    icon: "success",
+                    buttons: false,
+                    timer: 1500
+                });
+            })
+            .catch(err => {
+                if (err.response.status === 401) {
+                    return swal({
+                        text: "Bạn phải đăng nhập để đánh giá",
+                        icon: "error",
+                        buttons: false,
+                        timer: 1500
+                    });
+                }
+                console.log(err.response);
+            });
+    };
+};

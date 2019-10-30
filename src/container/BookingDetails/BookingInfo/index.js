@@ -1,7 +1,15 @@
 import React, { Component } from "react";
-import Kid from "../../../assets/images/kid.jpg";
+import Kid from "../../../assets/images/user-ic.png";
 import { Wrapper } from "../styled";
-import { Form, Input, Button, Icon, Select, notification, Skeleton } from "antd";
+import {
+    Form,
+    Input,
+    Button,
+    Icon,
+    Select,
+    notification,
+    Skeleton
+} from "antd";
 import { object, string } from "yup";
 import { withFormik, Form as FormikForm } from "formik";
 import _ from "lodash";
@@ -16,7 +24,7 @@ import { BodyWrapper } from "../styled";
 import swal from "sweetalert";
 import { connect } from "react-redux";
 import { actionGetTripByID } from "../../../reducers/Trip/actions";
-import moment from "moment"
+import moment from "moment";
 
 const FormItem = Form.Item;
 const { Option } = Select;
@@ -33,8 +41,7 @@ class BookingTrip extends Component {
     componentDidMount() {
         const { match, actionGetTripByID, user } = this.props;
         const { id } = match.params;
-       // console.log("User: ", user.user.userType);
-        
+        // console.log("User: ", user.user.userType);
 
         actionGetTripByID(id);
 
@@ -49,9 +56,8 @@ class BookingTrip extends Component {
 
     render() {
         const { touched, errors, values, setFieldValue, trips } = this.props;
-        const tripData = trips.data;   
+        const tripData = trips.data;
         console.log(tripData.driverID);
-            
 
         const locations = _.map(this.state.locationArr, (item, index) => {
             return (
@@ -70,54 +76,80 @@ class BookingTrip extends Component {
                             Chuyến Đi
                         </h5>
                         <Skeleton
-                        loading={trips.isLoading}
-                        active
-                        paragraph={{ rows: 4 }}
-                    >
-                        <div className="d-flex">
-                            <div className="flex-grow-1">
-                                <div className="d-flex align-items-center mb-1">
-                                    {tripData.locationFrom}
-                                    <Icon type="arrow-right" className="mx-2" />
-                                    {tripData.locationTo}
-                                </div>
-                                <div className="d-flex align-items-center">
-                                    <Icon type="calendar" className="mr-1" />
-                                    {moment(tripData.startTime).format("DD/MM/YYYY")}
-                                </div>
-                            </div>
-                            <div className="flex-grow-1">
-                                <div className="mb-1 d-flex align-items-center">
-                                    {/* TODO: Ten xe */}
-                                     Ten XE
-                                     </div>
-                                <div className="d-flex align-items-center">
-                                    <Icon type="team" className="mr-1" />{tripData.availableSeats}
-                                </div>
-                            </div>
-                            <div className="flex-grow-1 d-inline-flex">
-                                <Thumb
-                                    src={Kid}
-                                    alt="driver"
-                                    className="mr-2"
-                                />
-                                <div>
-                                    <p className="mb-1"> {tripData.driverID && tripData.driverID.fullName}</p>
+                            loading={trips.isLoading}
+                            active
+                            paragraph={{ rows: 4 }}
+                        >
+                            <div className="d-flex">
+                                <div className="flex-grow-1">
+                                    <div className="d-flex align-items-center mb-1">
+                                        {tripData.locationFrom}
+                                        <Icon
+                                            type="arrow-right"
+                                            className="mx-2"
+                                        />
+                                        {tripData.locationTo}
+                                    </div>
                                     <div className="d-flex align-items-center">
                                         <Icon
-                                            type="star"
-                                            theme="twoTone"
+                                            type="calendar"
                                             className="mr-1"
-                                            twoToneColor="#ffc107"
                                         />
-                                        4
+                                        {moment(tripData.startTime).format(
+                                            "DD/MM/YYYY"
+                                        )}
                                     </div>
                                 </div>
+                                <div className="flex-grow-1">
+                                    <div className="mb-1 d-flex align-items-center">
+                                        {/* TODO: Ten xe */}
+                                        Ten XE
+                                    </div>
+                                    <div className="d-flex align-items-center">
+                                        <Icon type="team" className="mr-1" />
+                                        {tripData.availableSeats}
+                                    </div>
+                                </div>
+                                <div className="flex-grow-1 d-inline-flex">
+                                    {tripData.driverID &&
+                                    tripData.driverID.avatar !== undefined ? (
+                                        <Thumb
+                                            src={
+                                                tripData.driverID &&
+                                                tripData.driverID.avatar
+                                            }
+                                            alt="driver"
+                                            className="mr-2"
+                                        />
+                                    ) : (
+                                        <Thumb
+                                            src={Kid}
+                                            alt="driver"
+                                            className="mr-2"
+                                        />
+                                    )}
+
+                                    <div>
+                                        <p className="mb-1">
+                                            {" "}
+                                            {tripData.driverID &&
+                                                tripData.driverID.fullName}
+                                        </p>
+                                        <div className="d-flex align-items-center">
+                                            <Icon
+                                                type="star"
+                                                theme="twoTone"
+                                                className="mr-1"
+                                                twoToneColor="#ffc107"
+                                            />
+                                            4
+                                        </div>
+                                    </div>
+                                </div>
+                                <Price priceFont="30px" className="flex-grow-1">
+                                    {tripData.fee} <sup>vnd</sup>
+                                </Price>
                             </div>
-                            <Price priceFont="30px" className="flex-grow-1">
-                                {tripData.fee} <sup>vnd</sup>
-                            </Price>
-                        </div>
                         </Skeleton>
                     </Wrapper>
                     <Wrapper className="mt-5">

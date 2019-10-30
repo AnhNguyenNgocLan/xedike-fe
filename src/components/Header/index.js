@@ -76,9 +76,11 @@ class Header extends Component {
                 <Menu.Item>
                     <Link to="/edit-profile">Thông Tin Cá Nhân</Link>
                 </Menu.Item>
-                <Menu.Item>
-                    <Link to="/my-trip">Chuyến Đi</Link>
-                </Menu.Item>
+                {isDriver !== "driver" && (
+                    <Menu.Item>
+                        <Link to="/my-trip">Chuyến Đi</Link>
+                    </Menu.Item>
+                )}
                 <Menu.Item>
                     <Link to="/" onClick={() => this.props.actionLogout()}>
                         Đăng Xuất
@@ -95,8 +97,7 @@ class Header extends Component {
                     </Link>
 
                     <Collapse isOpen={this.state.isOpen} navbar>
-                        <Nav className="ml-auto align-items-center" navbar>                          
-
+                        <Nav className="ml-auto align-items-center" navbar>
                             {isAuthenticated ? (
                                 <>
                                     {isDriver === "driver" ? (

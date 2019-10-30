@@ -11,7 +11,8 @@ var initialState = {
         userType: "",
         phoneNumber: "",
         dayOfBirth: null,
-        avatar: ""
+        avatar: "",
+        rating: 0
     },
     vehicles: [
         {
@@ -26,7 +27,7 @@ var initialState = {
 
 const user = (state = initialState, action) => {
     switch (action.type) {
-        case Types.GET_USER_DETAILS:            
+        case Types.GET_USER_DETAILS:
             return {
                 isLoading: false,
                 ...action.payload
@@ -46,6 +47,12 @@ const user = (state = initialState, action) => {
             uploadAvatar.data.avatar = action.payload.avatar;
 
             return uploadAvatar;
+
+        case Types.RATING:
+            let dataRating = { ...state };
+            dataRating.data.rating = action.payload.rating;
+
+            return dataRating;
 
         default:
             return state;

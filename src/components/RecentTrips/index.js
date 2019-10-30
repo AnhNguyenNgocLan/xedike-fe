@@ -16,7 +16,7 @@ class RecentTrips extends Component {
         const { isLoading, data } = trips;
        
         return (
-            <RecentTripSection className="container">
+            <RecentTripSection>
                 <h4 className="mb-4 text-uppercase">
                     {isHomepage ? "Chuyến Xe Gần Đây" : "Kết Quả Tìm Kiếm"}
                 </h4>

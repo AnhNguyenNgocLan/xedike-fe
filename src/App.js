@@ -44,7 +44,7 @@ function App(props) {
                         exact
                         component={isAuthenticated ? UserProfile : PageNotFound}
                     ></Route>
-                    <Route path="/my-trip" exact component={MyTrip}></Route>
+                    <Route path="/my-trip" exact component={ isAuthenticated ? MyTrip : PageNotFound}></Route>
                     <Route
                         path="/book-trip/:id"
                         exact

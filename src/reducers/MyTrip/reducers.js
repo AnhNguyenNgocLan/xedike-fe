@@ -5,7 +5,6 @@ var initialState = {
     isLoading: true,
     data: [
         {
-            isFinished: false,
             _id: "",
             locationFrom: "",
             locationTo: "",
@@ -25,38 +24,32 @@ var initialState = {
 //     return trips.findIndex(item => item.id === id);
 // };
 
-const trips = (state = initialState, action) => {
-    switch (action.type) {
-        case Types.FETCH_TRIPS:
+const mytrips = (state = initialState, action) => {
+    switch (action.type) {       
+
+        case Types.GET_MY_OWN_TRIP:
             return {
                 isLoading: false,
                 data: action.payload
             };
 
-        case Types.SEARCH_TRIPS:
-            return {
-                isLoading: false,
-                data: action.payload
-            };
+        case Types.FINISH_TRIP:
+            let finishTrip = [...state.data];
+            const findIndex = _.findIndex(finishTrip, trip => {
+                return trip._id === action.payload._id;
+            });
 
-        case Types.GET_TRIP_BY_ID:
-            return {
-                isLoading: false,
-                data: action.payload
-            };
-
-        case Types.CREATE_TRIP:
-            state.data.push(action.payload);
+            finishTrip[findIndex].isFinished = action.payload.isFinished;
 
             return {
                 isLoading: false,
-                data: [...state.data]
+                data: [...finishTrip]
             };
 
-        
+            return action.payload;
         default:
             return state;
     }
 };
 
-export default trips;
+export default mytrips;

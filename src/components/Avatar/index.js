@@ -6,7 +6,10 @@ import moment from "moment";
 import { withRouter } from "react-router-dom";
 import _ from "lodash";
 import { connect } from "react-redux";
-import { actionUploadUserAvatar } from "../../reducers/User/actions";
+import {
+    actionUploadUserAvatar,
+    ratingDriver
+} from "../../reducers/User/actions";
 
 class AvatarWrapper extends Component {
     constructor(props) {
@@ -48,9 +51,17 @@ class AvatarWrapper extends Component {
         });
     };
 
-    render() {
-        const { avatar, fullName } = this.props;        
+    handleRating = value => {
+        const { match, ratingDriver } = this.props;
+        const { id } = match.params;
 
+        if (_.isEmpty(match.params)) return;
+
+        ratingDriver(id, value);
+    };
+
+    render() {
+        const { avatar, fullName } = this.props;
         const { isLoading } = this.state;
         return (
             <div>
@@ -91,5 +102,5 @@ const mapStateToProps = state => {
 
 export default connect(
     mapStateToProps,
-    { actionUploadUserAvatar }
+    { actionUploadUserAvatar, ratingDriver }
 )(withRouter(AvatarWrapper));
